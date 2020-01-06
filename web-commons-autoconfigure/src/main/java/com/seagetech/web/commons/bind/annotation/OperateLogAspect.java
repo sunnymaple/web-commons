@@ -16,7 +16,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;
 
-/**
+/** 获取注解字段切面
  * @author gdl
  * @date 2020/1/6 11:15
  * @company 矽甲（上海）信息科技有限公司
