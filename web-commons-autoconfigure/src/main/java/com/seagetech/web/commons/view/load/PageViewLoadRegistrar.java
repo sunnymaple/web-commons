@@ -2,6 +2,7 @@ package com.seagetech.web.commons.view.load;
 
 import com.seagetech.common.util.SeageUtils;
 import com.seagetech.web.commons.bind.FunctionType;
+import com.seagetech.web.commons.bind.annotation.EnablePageView;
 import com.seagetech.web.commons.bind.annotation.PageView;
 import com.seagetech.web.commons.bind.annotation.Resolver;
 import com.seagetech.web.commons.util.Utils;
@@ -13,15 +14,15 @@ import org.springframework.beans.factory.support.BeanDefinitionRegistryPostProce
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
 import org.springframework.context.annotation.ImportBeanDefinitionRegistrar;
+import org.springframework.core.annotation.AnnotationAttributes;
 import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.core.type.filter.AnnotationTypeFilter;
+import org.springframework.util.Assert;
+import org.springframework.util.ClassUtils;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 /**
  * PageView功能组件注册
@@ -51,8 +52,39 @@ public class PageViewLoadRegistrar implements ImportBeanDefinitionRegistrar {
         PageViewContainer pageViewContainer = PageViewContainer.getInstance();
         //添加@Component注解的类到容器中
         findCandidateComponents(registry);
-        //添加默认的视图页
-        addDefaultPageView(pageViewContainer, registry);
+
+        //扫描的包
+        AnnotationAttributes attributes = getAttributes(importingClassMetadata);
+        String[] scanBasePackages = (String[]) attributes.get("scanBasePackages");
+        List<String> scanBasePackageList = new ArrayList<>(Arrays.asList(scanBasePackages));
+        scanBasePackageList.add(DEFAULT_PACKAGE_NAME + ".view.entity");
+        //添加视图数据
+        ClassPathScanningCandidateComponentProvider provider = new ClassPathScanningCandidateComponentProvider(false);
+        provider.addIncludeFilter(new AnnotationTypeFilter(PageView.class));
+        scanBasePackageList.forEach(scanBasePackage->addPageView(pageViewContainer, registry,provider,scanBasePackage));
+    }
+
+    /**
+     * Return the appropriate {@link AnnotationAttributes} from the
+     * {@link AnnotationMetadata}. By default this method will return attributes for
+     * {@link #getAnnotationClass()}.
+     * @param metadata the annotation metadata
+     * @return annotation attributes
+     */
+    protected AnnotationAttributes getAttributes(AnnotationMetadata metadata) {
+        String name = getAnnotationClass().getName();
+        AnnotationAttributes attributes = AnnotationAttributes.fromMap(metadata.getAnnotationAttributes(name, true));
+        Assert.notNull(attributes, () -> "No auto-configuration attributes found. Is " + metadata.getClassName()
+                + " annotated with " + ClassUtils.getShortName(name) + "?");
+        return attributes;
+    }
+
+    /**
+     * Return the source annotation class used by the selector.
+     * @return the annotation class
+     */
+    protected Class<?> getAnnotationClass() {
+        return EnablePageView.class;
     }
 
     /**
@@ -71,10 +103,8 @@ public class PageViewLoadRegistrar implements ImportBeanDefinitionRegistrar {
      * 添加默认的视图页
      * @param pageViewContainer 视图信息容器
      */
-    private void addDefaultPageView(PageViewContainer pageViewContainer,BeanDefinitionRegistry registry){
-        ClassPathScanningCandidateComponentProvider provider = new ClassPathScanningCandidateComponentProvider(false);
-        provider.addIncludeFilter(new AnnotationTypeFilter(PageView.class));
-        Set<BeanDefinition> beanDefinitionSet = provider.findCandidateComponents(DEFAULT_PACKAGE_NAME + ".view.entity");
+    private void addPageView(PageViewContainer pageViewContainer,BeanDefinitionRegistry registry,ClassPathScanningCandidateComponentProvider provider,String basePackage){
+        Set<BeanDefinition> beanDefinitionSet = provider.findCandidateComponents(basePackage);
         beanDefinitionSet.forEach(beanDefinition -> {
             try {
                 Class<?> beanClass = Class.forName(beanDefinition.getBeanClassName());
@@ -87,7 +117,8 @@ public class PageViewLoadRegistrar implements ImportBeanDefinitionRegistrar {
                         .setView(pageView.view())
                         .setViewName(pageView.value())
                         .setTableId(pageView.tableId())
-                        .setPageViewClass(beanClass);
+                        .setPageViewClass(beanClass)
+                        .setViewPath(pageView.viewPath());
                 //自定义
                 FunctionType[] functionTypes = pageView.enableCustomFunctions();
                 if (!SeageUtils.isEmpty(functionTypes)){

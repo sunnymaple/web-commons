@@ -1,6 +1,7 @@
 package com.seagetech.web.commons.view.entity.dto;
 
 import com.seagetech.web.commons.bind.Condition;
+import com.seagetech.web.commons.bind.annotation.Add;
 import com.seagetech.web.commons.bind.annotation.PageView;
 import com.seagetech.web.commons.bind.annotation.Query;
 import com.seagetech.web.commons.view.DefaultViewName;
@@ -41,6 +42,7 @@ public class BasedUserDTO implements Serializable {
      * 昵称，姓名
      */
     @Query(condition= Condition.LIKE,label="姓名")
+    @Add(label="姓名")
     private String nickname;
 
     /**

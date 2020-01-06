@@ -22,6 +22,12 @@ public @interface PageView {
     String value();
 
     /**
+     * 视图路径
+     * @return
+     */
+    String viewPath() default "";
+
+    /**
      * 表名称，默认为实体类下划线的形式
      * @return
      */

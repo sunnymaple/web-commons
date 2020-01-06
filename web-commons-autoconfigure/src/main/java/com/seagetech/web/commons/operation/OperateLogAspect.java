@@ -1,6 +1,7 @@
-package com.seagetech.web.commons.bind.annotation;
+package com.seagetech.web.commons.operation;
 
 import com.alibaba.fastjson.JSONObject;
+import com.seagetech.web.commons.bind.annotation.OperateLog;
 import com.seagetech.web.commons.view.entity.LogOperateVo;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;

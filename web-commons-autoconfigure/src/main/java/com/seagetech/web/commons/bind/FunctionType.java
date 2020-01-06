@@ -8,7 +8,27 @@ package com.seagetech.web.commons.bind;
  */
 public enum FunctionType {
     /**
-     * 查询条件
+     * 查询
      */
-    QUERY;
+    QUERY,
+    /**
+     * 新增
+     */
+    ADD,
+    /**
+     * 删除
+     */
+    DELETE,
+    /**
+     * 更新
+     */
+    UPDATE,
+    /**
+     * 导入
+     */
+    IMPORT,
+    /**
+     * 导出
+     */
+    EXPORT;
 }

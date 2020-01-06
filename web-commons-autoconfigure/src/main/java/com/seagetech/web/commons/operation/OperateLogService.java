@@ -1,4 +1,4 @@
-package com.seagetech.web.commons.bind.annotation;
+package com.seagetech.web.commons.operation;
 
 import com.seagetech.web.commons.view.entity.LogOperateVo;
 import org.springframework.stereotype.Component;

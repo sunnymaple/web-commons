@@ -1,11 +1,14 @@
 package com.seagetech.web.commons.bind.annotation;
 
+import com.seagetech.web.commons.bind.FunctionType;
+import com.seagetech.web.commons.view.load.resolver.AddResolver;
+
 import java.io.Serializable;
 import java.lang.annotation.*;
-import java.util.Date;
 
 /**
  * 添加功能组件
+ * 字段的验证支持
  * @author wangzb
  * @date 2019/12/31 9:43
  * @company 矽甲（上海）信息科技有限公司
@@ -13,6 +16,7 @@ import java.util.Date;
 @Target({ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
+@Resolver(resolverBy = AddResolver.class,functionType = FunctionType.ADD)
 public @interface Add {
     /**
      * 字段类型
@@ -21,21 +25,22 @@ public @interface Add {
     Class<? extends Serializable> fieldType() default String.class;
 
     /**
-     * 如果是日期格式{@link Date} ,请指定日期格式，如yyyy-MM-dd HH:mm:ss
-     * 如果是字符串或者其他数字类型，可以指定正则表达式
+     * 参数名称，默认为属性名
      * @return
      */
-    String format() default "";
+    String name() default "";
 
     /**
-     * 除了使用正则表达式
+     * 数据库列名称，默认为属性"_"形式
      * @return
      */
-    Class<? extends Annotation>[] validateds() default {};
+    String columnName() default "";
 
     /**
-     * 字段名称
+     * 页面查询条件的label的名称
+     * 可以为空，有前端或者客户端自定义
+     * 如果要基于该框架实现一个后台模板，可以指定label的值
      * @return
      */
-    String fieldName() default "";
+    String label() default "";
 }

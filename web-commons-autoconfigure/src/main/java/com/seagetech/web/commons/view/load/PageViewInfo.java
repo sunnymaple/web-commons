@@ -27,6 +27,11 @@ public class PageViewInfo extends HashMap<FunctionType,List<IFunctionInfo>> {
      */
     private String viewName;
     /**
+     * 视图路径
+     */
+    private String viewPath;
+
+    /**
      * 表
      */
     private String table;
