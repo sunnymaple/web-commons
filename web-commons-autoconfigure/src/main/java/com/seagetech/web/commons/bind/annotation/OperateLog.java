@@ -1,5 +1,7 @@
 package com.seagetech.web.commons.bind.annotation;
 
+import com.seagetech.web.commons.operation.OperateLogService;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -21,7 +23,7 @@ public @interface OperateLog {
     /**
      * class类
      */
-    Class<? extends IOperateLog> objClass();
+    Class<? extends OperateLogService> objClass();
 
     /**
      * 备注信息
