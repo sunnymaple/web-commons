@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -27,7 +28,8 @@ import java.lang.reflect.Method;
 @Component
 public class OperateLogAspect {
 
-    private ApplicationContext applicationContext = null;
+    @Resource
+    private ApplicationContext applicationContext;
 
     @Pointcut(value = "@annotation(com.seagetech.web.commons.bind.annotation.OperateLog)")
     public void dataLog() {
