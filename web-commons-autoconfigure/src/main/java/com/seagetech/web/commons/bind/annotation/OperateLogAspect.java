@@ -2,7 +2,6 @@ package com.seagetech.web.commons.bind.annotation;
 
 import com.alibaba.fastjson.JSONObject;
 import com.seagetech.web.commons.view.entity.LogOperateVo;
-import org.apache.poi.ss.formula.functions.T;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -15,7 +14,6 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 /**
@@ -42,7 +40,7 @@ public class OperateLogAspect {
         Object proceed = joinPoint.proceed();
         //获取用户名
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-        JSONObject userName = (JSONObject)request.getSession().getAttribute("user");
+        JSONObject userName = (JSONObject) request.getSession().getAttribute("user");
         //注解及操作信息
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
         Method method = signature.getMethod();
@@ -53,7 +51,7 @@ public class OperateLogAspect {
         logOperateVo.setOperateType(annotation.operateType());
         logOperateVo.setOperateDetail(annotation.detail());
         logOperateVo.setCreateUserId(Integer.valueOf(userName.get("userId").toString()));
-        IOperateLog bean = (IOperateLog) applicationContext.getBean(aClass);
+        OperateLogService bean = (OperateLogService) applicationContext.getBean(aClass);
         bean.logOperate(logOperateVo);
         return proceed;
     }

@@ -9,6 +9,6 @@ import org.springframework.stereotype.Component;
  * @company 矽甲（上海）信息科技有限公司
  */
 @Component
-public interface IOperateLog {
+public interface OperateLogService {
     void logOperate(LogOperateVo logOperateVo);
 }
