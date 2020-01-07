@@ -2,6 +2,7 @@ package com.seagetech.web.commons.view.entity.dto;
 
 import com.seagetech.web.commons.bind.Condition;
 import com.seagetech.web.commons.bind.annotation.Add;
+import com.seagetech.web.commons.bind.annotation.Delete;
 import com.seagetech.web.commons.bind.annotation.PageView;
 import com.seagetech.web.commons.bind.annotation.Query;
 import com.seagetech.web.commons.view.DefaultViewName;
@@ -30,6 +31,7 @@ public class BasedUserDTO implements Serializable {
     /**
      * 用户表注解
      */
+    @Delete(columnName = "user_id",statusName = "status",deleteType = 1)
     private Integer userId;
 
     /**

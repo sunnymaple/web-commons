@@ -1,6 +1,8 @@
 package com.seagetech.web.commons.view.mapper;
 
+import com.seagetech.web.commons.view.mapper.provider.DynamicDeleteProvider;
 import com.seagetech.web.commons.view.mapper.provider.DynamicSelectProvider;
+import org.apache.ibatis.annotations.DeleteProvider;
 import org.apache.ibatis.annotations.SelectProvider;
 
 import java.util.List;
@@ -21,4 +23,12 @@ public interface PageViewMapper {
      */
     @SelectProvider(type = DynamicSelectProvider.class, method = "createSql")
     List<Map<String,Object>> getList(String viewName,Map<String, Object> params);
+
+    /**
+     * 根据主键删除
+     * @param viewName
+     * @param deleteId
+     */
+    @DeleteProvider(type = DynamicDeleteProvider.class,method = "deleteById")
+    void deleteById(String viewName, Integer deleteId);
 }

@@ -18,4 +18,12 @@ public interface PageViewService {
      * @return
      */
     List<Map<String,Object>> getListByPage(String viewName, Map<String,Object> params);
+
+    /**
+     * 根据主键删除数据
+     * @param viewName
+     * @param deleteId
+     */
+    void deleteById(String viewName, Integer deleteId);
+
 }

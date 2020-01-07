@@ -2,7 +2,7 @@ package com.seagetech.web.commons.operation;
 
 import com.alibaba.fastjson.JSONObject;
 import com.seagetech.web.commons.bind.annotation.OperateLog;
-import com.seagetech.web.commons.view.entity.LogOperateVo;
+import com.seagetech.web.commons.view.entity.dto.LogOperateDTO;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -48,7 +48,7 @@ public class OperateLogAspect {
         OperateLog annotation = method.getAnnotation(OperateLog.class);
         Class<?> aClass = annotation.objClass();
         //封装操作对象
-        LogOperateVo logOperateVo = new LogOperateVo();
+        LogOperateDTO logOperateVo = new LogOperateDTO();
         logOperateVo.setOperateType(annotation.operateType());
         logOperateVo.setOperateDetail(annotation.detail());
         logOperateVo.setCreateUserId(Integer.valueOf(userName.get("userId").toString()));

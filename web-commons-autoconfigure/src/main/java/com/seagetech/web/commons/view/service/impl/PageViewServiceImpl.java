@@ -41,4 +41,9 @@ public class PageViewServiceImpl implements PageViewService {
         List<Map<String,Object>> list = pageViewMapper.getList(viewName,params);
         return list;
     }
+
+    @Override
+    public void deleteById(String viewName, Integer deleteId) {
+        pageViewMapper.deleteById(viewName,deleteId);
+    }
 }

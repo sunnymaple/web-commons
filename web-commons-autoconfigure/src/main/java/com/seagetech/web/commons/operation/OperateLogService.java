@@ -1,6 +1,6 @@
 package com.seagetech.web.commons.operation;
 
-import com.seagetech.web.commons.view.entity.LogOperateVo;
+import com.seagetech.web.commons.view.entity.dto.LogOperateDTO;
 import org.springframework.stereotype.Component;
 
 /** 日志操作超类
@@ -10,5 +10,5 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public interface OperateLogService {
-    void logOperate(LogOperateVo logOperateVo);
+    void logOperate(LogOperateDTO logOperateVo);
 }

@@ -1,4 +1,4 @@
-package com.seagetech.web.commons.view.entity;
+package com.seagetech.web.commons.view.entity.dto;
 
 import lombok.*;
 
@@ -14,7 +14,7 @@ import java.time.format.DateTimeFormatter;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor()
-public class LogOperateVo {
+public class LogOperateDTO {
     /**
      * 操作类型
      */

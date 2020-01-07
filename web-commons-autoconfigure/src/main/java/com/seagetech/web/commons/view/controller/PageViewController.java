@@ -7,10 +7,7 @@ import com.seagetech.web.commons.view.load.PageViewContainer;
 import com.seagetech.web.commons.view.load.PageViewInfo;
 import com.seagetech.web.commons.view.service.PageViewService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -55,6 +52,16 @@ public class PageViewController {
     @PageHandler(pageHandlerType = PageHandlerType.NOT_PAGE)
     public List<Map<String,Object>> getListByPage(@PathVariable(value = "viewName") String viewName){
         return pageViewService.getListByPage(viewName, Utils.getParameter(request));
+    }
+
+    /**
+     * 删除操作
+     * @param viewName
+     * @param deleteId
+     */
+    @GetMapping("/deleteById/{viewName}/{deleteId}")
+    public void deleteById(@PathVariable(value = "viewName") String viewName,@PathVariable(value = "deleteId") Integer deleteId){
+        pageViewService.deleteById(viewName, deleteId);
     }
 
 }
