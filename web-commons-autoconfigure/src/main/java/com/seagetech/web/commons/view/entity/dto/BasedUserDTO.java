@@ -31,7 +31,7 @@ public class BasedUserDTO implements Serializable {
     /**
      * 用户表注解
      */
-    @Delete(columnName = "user_id",statusName = "status",deleteType = 1)
+    @Delete(columnName = "user_id",deleteType = 1)
     private Integer userId;
 
     /**
