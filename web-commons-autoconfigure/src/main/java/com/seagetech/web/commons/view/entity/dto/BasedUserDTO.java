@@ -10,6 +10,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 /**
@@ -45,6 +46,7 @@ public class BasedUserDTO implements Serializable {
      */
     @Query(condition= Condition.LIKE,label="姓名")
     @Add(label="姓名")
+    @NotNull(message = "姓名不能为空！")
     private String nickname;
 
     /**

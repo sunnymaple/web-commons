@@ -19,4 +19,18 @@ public interface IPageViewCustom {
     default List<Map<String,Object>> customQuery(String viewName, Map<String, Object> params){
         return null;
     }
+
+    /**
+     * 自定义新增功能
+     * @param viewName 视图名称
+     * @param params 新增内容
+     */
+    default void customAdd(String viewName, Map<String, Object> params){};
+
+    /**
+     * 自定义删除操作
+     * @param viewName 视图名称
+     * @param params 新增内容
+     */
+    default void customDeleteById(String viewName, Map<String, Object> params){};
 }

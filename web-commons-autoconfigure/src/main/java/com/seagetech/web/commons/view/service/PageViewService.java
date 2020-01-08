@@ -20,6 +20,13 @@ public interface PageViewService {
     List<Map<String,Object>> getListByPage(String viewName, Map<String,Object> params);
 
     /**
+     * 添加、新增
+     * @param viewName 视图名称
+     * @param params 新增内容
+     */
+    void add(String viewName,Map<String,Object> params);
+
+    /**
      * 根据主键删除数据
      * @param viewName
      * @param deleteId

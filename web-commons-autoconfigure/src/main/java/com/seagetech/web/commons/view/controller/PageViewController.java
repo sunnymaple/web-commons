@@ -1,5 +1,7 @@
 package com.seagetech.web.commons.view.controller;
 
+import com.seagetech.common.exception.ParamException;
+import com.seagetech.common.util.SeageJson;
 import com.seagetech.web.bind.PageHandlerType;
 import com.seagetech.web.bind.annotation.PageHandler;
 import com.seagetech.web.commons.util.Utils;
@@ -7,6 +9,11 @@ import com.seagetech.web.commons.view.load.PageViewContainer;
 import com.seagetech.web.commons.view.load.PageViewInfo;
 import com.seagetech.web.commons.view.service.PageViewService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -23,6 +30,7 @@ import java.util.Optional;
  */
 @RestController
 @RequestMapping("/view")
+@Validated
 public class PageViewController {
 
     @Autowired
@@ -52,6 +60,18 @@ public class PageViewController {
     @PageHandler(pageHandlerType = PageHandlerType.NOT_PAGE)
     public List<Map<String,Object>> getListByPage(@PathVariable(value = "viewName") String viewName){
         return pageViewService.getListByPage(viewName, Utils.getParameter(request));
+    }
+
+    /**
+     * 添加、新增
+     * @param viewName 视图名称
+     * @return
+     */
+    @RequestMapping(value = "/add/{viewName}",produces = "application/json")
+    @ParamValidated
+    public String add(@PathVariable(value = "viewName") String viewName) {
+        pageViewService.add(viewName,Utils.getParameter(request));
+        return "添加成功!";
     }
 
     /**

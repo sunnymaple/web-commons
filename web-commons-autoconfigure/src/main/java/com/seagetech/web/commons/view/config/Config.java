@@ -2,11 +2,16 @@ package com.seagetech.web.commons.view.config;
 
 import com.baomidou.mybatisplus.autoconfigure.MybatisPlusProperties;
 import com.baomidou.mybatisplus.core.MybatisConfiguration;
+import org.hibernate.validator.HibernateValidator;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import javax.annotation.PostConstruct;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
 
 /**
  * 配置类
@@ -20,6 +25,20 @@ public class Config {
 
     @Autowired
     private MybatisPlusProperties mybatisPlusProperties;
+
+    /**
+     * 参数验证
+     * @return
+     */
+    @Bean
+    public Validator validator() {
+        ValidatorFactory validatorFactory = Validation.byProvider(HibernateValidator.class)
+                .configure()
+                .failFast(true)
+                .buildValidatorFactory();
+        Validator validator = validatorFactory.getValidator();
+        return validator;
+    }
 
     /**
      * 初始化操作

@@ -4,10 +4,14 @@ import com.seagetech.common.util.SeageUtils;
 import com.seagetech.web.commons.bind.annotation.Add;
 import com.seagetech.web.commons.view.load.AddInfo;
 
+import javax.validation.Constraint;
+import java.lang.annotation.Annotation;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
+ * 新增功能注解解析器
  * @author wangzb
  * @date 2020/1/6 15:11
  * @company 矽甲（上海）信息科技有限公司
@@ -34,8 +38,14 @@ public class AddResolver extends AbstractResolver<Add, AddInfo>{
                 .setFieldType(annotation.fieldType());
         addInfos.add(addInfo);
         //查找验证
-//        Annotation[] annotations = field.getAnnotations();
-
+        List<Annotation> validates = new ArrayList<>();
+        Arrays.stream(field.getAnnotations()).forEach(annotation->{
+            Constraint constraint = annotation.annotationType().getAnnotation(Constraint.class);
+            if (constraint != null){
+                validates.add(annotation);
+            }
+        });
+        addInfo.setValidates(validates);
         return addInfos;
     }
 }
