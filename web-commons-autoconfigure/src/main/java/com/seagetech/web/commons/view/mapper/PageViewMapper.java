@@ -1,8 +1,10 @@
 package com.seagetech.web.commons.view.mapper;
 
 import com.seagetech.web.commons.view.mapper.provider.DynamicDeleteProvider;
+import com.seagetech.web.commons.view.mapper.provider.DynamicInsertProvider;
 import com.seagetech.web.commons.view.mapper.provider.DynamicSelectProvider;
 import org.apache.ibatis.annotations.DeleteProvider;
+import org.apache.ibatis.annotations.InsertProvider;
 import org.apache.ibatis.annotations.SelectProvider;
 
 import java.util.List;
@@ -23,6 +25,15 @@ public interface PageViewMapper {
      */
     @SelectProvider(type = DynamicSelectProvider.class, method = "createSql")
     List<Map<String,Object>> getList(String viewName,Map<String, Object> params);
+
+    /**
+     * 新增
+     * @param userId 用户主键
+     * @param viewName 视图名称
+     * @param params 条件查询
+     */
+    @InsertProvider(type = DynamicInsertProvider.class, method = "createSql")
+    void insert(Object userId,String viewName,Map<String, Object> params);
 
     /**
      * 根据主键删除

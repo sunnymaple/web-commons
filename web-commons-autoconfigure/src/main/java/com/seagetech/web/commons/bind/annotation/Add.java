@@ -37,6 +37,24 @@ public @interface Add {
     String columnName() default "";
 
     /**
+     * 唯一性约束，默认为false
+     * 如果指定为true，会先判断是否有该值
+     * @return
+     */
+    boolean unique() default false;
+
+    /**
+     * 默认值
+     * 可以指定具体的值，如1,2这样的数字，或者指定一个字符串："张三"、"abc"
+     * 同时支持特定的参数：
+     * 1、当前系统时间：#date|yyyy-MM-dd HH:mm:ss
+     *     其中“#date|”为固定格式，"|"后面为日期格式
+     * 2、当前操作用户：#user
+     * @return
+     */
+    String defaultValue() default "";
+
+    /**
      * 页面查询条件的label的名称
      * 可以为空，有前端或者客户端自定义
      * 如果要基于该框架实现一个后台模板，可以指定label的值
