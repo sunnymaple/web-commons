@@ -112,4 +112,14 @@ public class BasedUserDTO implements Serializable {
     @Query(condition= Condition.LT_EQ,name = "endTime", label="截止时间")
     @Add(defaultValue = "#date|yyyy-MM-dd HH:mm:ss")
     private String createTime;
+    /**
+     * 密码
+     */
+    @Add(defaultValue = "#password")
+    private String password;
+    /**
+     * 创建人
+     */
+    @Add(defaultValue = "#user")
+    private Integer createUserId;
 }

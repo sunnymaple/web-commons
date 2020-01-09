@@ -1,5 +1,6 @@
 package com.seagetech.web.commons.view.mapper.def;
 
+import com.seagetech.common.util.SeageUtils;
 import com.seagetech.web.commons.bind.annotation.Add;
 
 import java.util.Objects;
@@ -33,6 +34,7 @@ public enum DefaultValueEnum {
      * 默认值
      */
     private String defaultValue;
+
     /**
      * 默认值处理类
      */
@@ -63,7 +65,10 @@ public enum DefaultValueEnum {
     public static Class<? extends IDefaultValue> getDefClass(String defaultValue) {
         DefaultValueEnum[] defaultValues = DefaultValueEnum.values();
         for (DefaultValueEnum defaultValueObj : defaultValues){
-            if (Objects.equals(defaultValue,defaultValueObj.defaultValue)){
+            String value = defaultValueObj.defaultValue;
+            //判断是否符合默认策略
+            boolean flg = Objects.equals(defaultValue,value) || (!SeageUtils.isEmpty(value) && defaultValue.startsWith(value));
+            if (flg){
                 return defaultValueObj.defClass;
             }
         }

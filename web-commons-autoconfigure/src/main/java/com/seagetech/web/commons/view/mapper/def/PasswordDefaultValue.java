@@ -2,8 +2,6 @@ package com.seagetech.web.commons.view.mapper.def;
 
 import com.seagetech.web.commons.view.load.PageViewProperties;
 
-import java.util.Optional;
-
 /**
  * 密码默认值
  * @author wangzb
@@ -24,7 +22,7 @@ public class PasswordDefaultValue implements IDefaultValue{
      */
     @Override
     public String getDefaultValue(Object userId, String name, String defaultValue) {
-        String defaultPassword = Optional.ofNullable(defaultValue).orElse(pageViewProperties.getDefaultPassword());
+        String defaultPassword = pageViewProperties.getDefaultPassword();
         return defaultPassword;
     }
 }
