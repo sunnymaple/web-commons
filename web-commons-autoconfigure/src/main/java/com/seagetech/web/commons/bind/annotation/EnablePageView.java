@@ -1,6 +1,8 @@
 package com.seagetech.web.commons.bind.annotation;
 
 import com.seagetech.web.commons.view.load.PageViewLoadRegistrar;
+import com.seagetech.web.commons.view.load.PageViewProperties;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Import;
 
 import java.lang.annotation.*;
@@ -15,6 +17,7 @@ import java.lang.annotation.*;
 @Target(ElementType.TYPE)
 @Documented
 @Import(PageViewLoadRegistrar.class)
+@EnableConfigurationProperties(PageViewProperties.class)
 public @interface EnablePageView {
     /**
      * 定义pageView扫描的包

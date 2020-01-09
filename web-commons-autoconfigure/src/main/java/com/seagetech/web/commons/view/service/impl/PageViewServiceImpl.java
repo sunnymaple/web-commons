@@ -1,6 +1,9 @@
 package com.seagetech.web.commons.view.service.impl;
 
+import com.seagetech.common.util.SeageUtils;
 import com.seagetech.web.commons.bind.FunctionType;
+import com.seagetech.web.commons.login.session.ISessionHandler;
+import com.seagetech.web.commons.view.exception.UniqueException;
 import com.seagetech.web.commons.view.load.AddInfo;
 import com.seagetech.web.commons.view.load.IFunctionInfo;
 import com.seagetech.web.commons.view.load.PageViewContainer;
@@ -10,8 +13,7 @@ import com.seagetech.web.commons.view.service.PageViewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.validation.*;
-import java.lang.annotation.Annotation;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -26,6 +28,9 @@ public class PageViewServiceImpl implements PageViewService {
 
     @Autowired
     private PageViewMapper pageViewMapper;
+
+    @Autowired
+    private ISessionHandler sessionHandler;
 
     /**
      * 列表分页查询
@@ -63,10 +68,26 @@ public class PageViewServiceImpl implements PageViewService {
             //自定义方法
             pageViewInfo.getPageViewCustom().customAdd(viewName,params);
         }
-        //
+        //判重
+        List<IFunctionInfo> functionInfos = pageViewInfo.get(FunctionType.ADD);
+        functionInfos.forEach(iFunctionInfo -> {
+            AddInfo addInfo = (AddInfo) iFunctionInfo;
+            if (addInfo.isUnique()){
+                String name = addInfo.getName();
+                Object value = params.get(name);
+                if (!SeageUtils.isEmpty(value)){
+                    Map<String,Object> queryParams = new HashMap<>(1);
+                    queryParams.put(name,value);
+                    List<Map<String, Object>> result = getListByPage(viewName, queryParams);
+                    if (result != null && result.size()>0){
+                        throw new UniqueException(value + "已存在!");
+                    }
+                }
+            }
+        });
+        //插入数据
+        pageViewMapper.insert(sessionHandler.getUser(),viewName,params);
     }
-
-
 
     @Override
     public void deleteById(String viewName, Integer deleteId) {

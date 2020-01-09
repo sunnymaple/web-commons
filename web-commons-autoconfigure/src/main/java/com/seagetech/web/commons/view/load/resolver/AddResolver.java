@@ -35,7 +35,9 @@ public class AddResolver extends AbstractResolver<Add, AddInfo>{
         AddInfo addInfo = AddInfo.builder().build()
                 .setName(name)
                 .setColumnName(columnName)
-                .setFieldType(annotation.fieldType());
+                .setFieldType(annotation.fieldType())
+                .setUnique(annotation.unique())
+                .setDefaultValue(annotation.defaultValue());
         addInfos.add(addInfo);
         //查找验证
         List<Annotation> validates = new ArrayList<>();

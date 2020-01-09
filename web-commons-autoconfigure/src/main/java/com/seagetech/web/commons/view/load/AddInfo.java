@@ -1,5 +1,6 @@
 package com.seagetech.web.commons.view.load;
 
+import com.seagetech.web.commons.bind.annotation.Add;
 import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -32,6 +33,15 @@ public class AddInfo implements IFunctionInfo{
      * @return
      */
     private String columnName;
+    /**
+     * 唯一约束
+     */
+    private boolean unique;
+    /**
+     * 默认值
+     * {@link Add#defaultValue()}
+     */
+    private String defaultValue;
     /**
      * 页面查询条件的label的名称
      * 可以为空，有前端或者客户端自定义

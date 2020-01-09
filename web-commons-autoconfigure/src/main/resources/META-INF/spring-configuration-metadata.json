@@ -1,0 +1,16 @@
+{
+  "hints":[],
+  "groups":[{
+      "sourceType": "com.seagetech.web.commons.view.load.PageViewProperties",
+      "name": "page.view",
+      "type": "com.seagetech.web.commons.view.load.PageViewProperties"
+    }],
+  "properties":[
+    {
+      "sourceType": "com.seagetech.web.commons.view.load.PageViewProperties",
+      "name": "page.view.default-password",
+      "type": "java.lang.String",
+      "description": "默认的密码",
+      "defaultValue": "0000"
+    }]
+}
