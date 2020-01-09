@@ -7,8 +7,6 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="web-common-starter" />
-        <module name="web-commons-starter" />
-        <module name="web-commons-autoconfigure" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -17,10 +15,5 @@
       <module name="web-commons-starter" target="1.5" />
       <module name="web-commons-tarter" target="1.5" />
     </bytecodeTargetLevel>
-  </component>
-  <component name="JavacSettings">
-    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="web-commons-autoconfigure" options="-parameters" />
-    </option>
   </component>
 </project>
