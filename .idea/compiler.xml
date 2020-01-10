@@ -7,6 +7,8 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="web-common-starter" />
+        <module name="web-commons-autoconfigure" />
+        <module name="web-commons-starter" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
