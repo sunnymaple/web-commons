@@ -16,7 +16,7 @@ public interface ISessionHandler<T> {
      * 获取用户名
      * @return
      */
-    String getUserName();
+    Object getUserName();
 
     /**
      * 设置用户信息到session中

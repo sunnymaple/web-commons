@@ -2,13 +2,17 @@ package com.seagetech.web.commons.view.load;
 
 import com.seagetech.common.util.SeageUtils;
 import com.seagetech.web.commons.bind.FunctionType;
+import com.seagetech.web.commons.login.exception.PrimaryKeyNotFindException;
+import com.seagetech.web.commons.view.DefaultViewName;
 import com.seagetech.web.commons.view.exception.DisabledFunctionException;
+import com.seagetech.web.commons.view.exception.UserEntityNotFindPasswordFieldException;
 import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -80,25 +84,42 @@ public class PageViewInfo extends HashMap<FunctionType,List<IFunctionInfo>> {
     }
 
     /**
-     * Returns the value to which the specified key is mapped,
-     * or {@code null} if this map contains no mapping for the key.
-     *
-     * <p>More formally, if this map contains a mapping from a key
-     * {@code k} to a value {@code v} such that {@code (key==null ? k==null :
-     * key.equals(k))}, then this method returns {@code v}; otherwise
-     * it returns {@code null}.  (There can be at most one such mapping.)
-     *
-     * <p>A return value of {@code null} does not <i>necessarily</i>
-     * indicate that the map contains no mapping for the key; it's also
-     * possible that the map explicitly maps the key to {@code null}.
-     * The {@link #containsKey containsKey} operation may be used to
-     * distinguish these two cases.
-     *
-     * @param key
+     * 没有获取到时抛出异常
+     * @param key 
+     * @return
      */
-    @Override
-    public List<IFunctionInfo> get(Object key) {
+    public List<IFunctionInfo> getThrow(Object key) {
         Optional<List<IFunctionInfo>> functionInfoOp = Optional.ofNullable(super.get(key));
         return functionInfoOp.orElseThrow(()->new DisabledFunctionException(key));
     }
+
+    /**
+     * 获取主键
+     * @return
+     */
+    public PrimaryKeyInfo getPrimaryKey(){
+        List<IFunctionInfo> primaryKeys = get(FunctionType.PRIMARY_KEY);
+        if (SeageUtils.isEmpty(primaryKeys)){
+            throw new PrimaryKeyNotFindException(DefaultViewName.USER);
+        }
+        PrimaryKeyInfo primaryKeyInfo = (PrimaryKeyInfo) primaryKeys.get(0);
+        return primaryKeyInfo;
+    }
+
+    /**
+     * 获取密码
+     * @return
+     */
+    public PasswordInfo getPassword(){
+        if (Objects.equals(viewName,DefaultViewName.USER)){
+            List<IFunctionInfo> passwords = get(FunctionType.PASSWORD);
+            if (SeageUtils.isEmpty(passwords)){
+                throw new UserEntityNotFindPasswordFieldException();
+            }
+            PasswordInfo passwordInfo = (PasswordInfo) passwords.get(0);
+            return passwordInfo;
+        }
+        return null;
+    }
+
 }

@@ -1,5 +1,6 @@
 package com.seagetech.web.commons.view.mapper.def;
 
+import com.seagetech.web.commons.login.shiro.ShiroUtils;
 import com.seagetech.web.commons.view.load.PageViewProperties;
 
 /**
@@ -22,7 +23,6 @@ public class PasswordDefaultValue implements IDefaultValue{
      */
     @Override
     public String getDefaultValue(Object userId, String name, String defaultValue) {
-        String defaultPassword = pageViewProperties.getDefaultPassword();
-        return defaultPassword;
+        return ShiroUtils.encryption(pageViewProperties.getDefaultPassword(),userId.toString());
     }
 }

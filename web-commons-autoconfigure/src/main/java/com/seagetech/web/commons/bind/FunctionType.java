@@ -30,5 +30,21 @@ public enum FunctionType {
     /**
      * 导出
      */
-    EXPORT;
+    EXPORT,
+    /**
+     * 主键
+     */
+    PRIMARY_KEY,
+    /**
+     * 用于登录的用户名字段
+     */
+    USE_LOGIN_USER_NAME,
+    /**
+     * 密码字段
+     */
+    PASSWORD,
+    /**
+     * 用户状态标记
+     */
+    USER_STATUS;
 }

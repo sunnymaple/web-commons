@@ -1,10 +1,41 @@
 {
-  "hints":[],
+  "hints":[{
+    "name":"login.enabled",
+    "values":[{
+      "value":true,
+      "description":"启用"
+    },{
+      "value":false,
+      "description":"禁用"
+    }]
+  },{
+    "name":"login.hash-algorithm-name",
+    "values":[{
+      "value":"MD5",
+      "description":"MD5"
+    },{
+      "value":"SHA1",
+      "description":"SHA1"
+    }]
+  },{
+    "name":"login.login-auth-pattern",
+    "values":[{
+      "value":"session",
+      "description":"session"
+    },{
+      "value":"auth2",
+      "description":"auth2+jwt 通过Token认证的方式，预留方式，暂不支持"
+    }]
+  }],
   "groups":[{
       "sourceType": "com.seagetech.web.commons.view.load.PageViewProperties",
       "name": "page.view",
       "type": "com.seagetech.web.commons.view.load.PageViewProperties"
-    }],
+    },{
+      "sourceType": "com.seagetech.web.commons.login.LoginProperties",
+      "name": "login",
+      "type": "com.seagetech.web.commons.login.LoginProperties"
+  }],
   "properties":[
     {
       "sourceType": "com.seagetech.web.commons.view.load.PageViewProperties",
@@ -12,5 +43,35 @@
       "type": "java.lang.String",
       "description": "默认的密码",
       "defaultValue": "0000"
+    },{
+      "sourceType": "com.seagetech.web.commons.login.LoginProperties",
+      "name": "login.enabled",
+      "type": "java.lang.Boolean",
+      "description": "是否启用登录自动配置",
+      "defaultValue": true
+    },{
+      "sourceType": "com.seagetech.web.commons.login.LoginProperties",
+      "name": "login.hash-algorithm-name",
+      "type": "java.lang.String",
+      "description": "登录密码加密认证模式",
+      "defaultValue": "MD5"
+    },{
+      "sourceType": "com.seagetech.web.commons.login.LoginProperties",
+      "name": "login.hash-iterations",
+      "type": "java.lang.Integer",
+      "description": "加密次数",
+      "defaultValue": 1024
+    },{
+      "sourceType": "com.seagetech.web.commons.login.LoginProperties",
+      "name": "login.login-auth-pattern",
+      "type": "java.lang.String",
+      "description": "登录认证方式",
+      "defaultValue": "session"
+    },{
+      "sourceType": "com.seagetech.web.commons.login.LoginProperties",
+      "name": "login.login-user-class",
+      "type": "java.lang.String",
+      "description": "登录用户实体",
+      "defaultValue": "com.seagetech.web.commons.login.entity.DefaultLoginUser"
     }]
 }

@@ -1,9 +1,54 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
+<<<<<<< Updated upstream
     <list default="true" id="ca4d6946-14b4-4dae-809d-2f7114f11ddf" name="Default Changelist" comment="导入功能修改，允许从字典表获取数据，允许赋予默认值" />
     <ignored path="$PROJECT_DIR$/web-commons-autoconfigure/target/" />
     <ignored path="$PROJECT_DIR$/web-commons-starter/target/" />
+=======
+    <list default="true" id="ca4d6946-14b4-4dae-809d-2f7114f11ddf" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/web-commons-autoconfigure/src/main/java/com/seagetech/web/commons/bind/annotation/Password.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web-commons-autoconfigure/src/main/java/com/seagetech/web/commons/bind/annotation/PrimaryKey.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web-commons-autoconfigure/src/main/java/com/seagetech/web/commons/bind/annotation/UseLoginUserName.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web-commons-autoconfigure/src/main/java/com/seagetech/web/commons/bind/annotation/UserStatus.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web-commons-autoconfigure/src/main/java/com/seagetech/web/commons/login/AbstractPermission.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web-commons-autoconfigure/src/main/java/com/seagetech/web/commons/login/DefaultLoginController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web-commons-autoconfigure/src/main/java/com/seagetech/web/commons/login/entity/DefaultLoginUser.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web-commons-autoconfigure/src/main/java/com/seagetech/web/commons/login/entity/vo/LoginVO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web-commons-autoconfigure/src/main/java/com/seagetech/web/commons/login/exception/LoginException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web-commons-autoconfigure/src/main/java/com/seagetech/web/commons/login/exception/NotLoginException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web-commons-autoconfigure/src/main/java/com/seagetech/web/commons/login/exception/PrimaryKeyNotFindException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web-commons-autoconfigure/src/main/java/com/seagetech/web/commons/login/exception/UseLoginUserNameNotFindException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web-commons-autoconfigure/src/main/java/com/seagetech/web/commons/login/session/AbstractSessionHandler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web-commons-autoconfigure/src/main/java/com/seagetech/web/commons/login/shiro/IPermission.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web-commons-autoconfigure/src/main/java/com/seagetech/web/commons/login/shiro/LoginAuthorizingRealm.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web-commons-autoconfigure/src/main/java/com/seagetech/web/commons/login/shiro/LoginInfo.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web-commons-autoconfigure/src/main/java/com/seagetech/web/commons/login/shiro/ShiroUtils.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web-commons-autoconfigure/src/main/java/com/seagetech/web/commons/login/shiro/UseUserNameLoginPermission.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web-commons-autoconfigure/src/main/java/com/seagetech/web/commons/view/exception/UserEntityNotFindPasswordFieldException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web-commons-autoconfigure/src/main/java/com/seagetech/web/commons/view/load/DefaultInfo.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web-commons-autoconfigure/src/main/java/com/seagetech/web/commons/view/load/PasswordInfo.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web-commons-autoconfigure/src/main/java/com/seagetech/web/commons/view/load/PrimaryKeyInfo.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web-commons-autoconfigure/src/main/java/com/seagetech/web/commons/view/load/UseLoginUserNameInfo.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web-commons-autoconfigure/src/main/java/com/seagetech/web/commons/view/load/UserStatusInfo.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web-commons-autoconfigure/src/main/java/com/seagetech/web/commons/view/load/resolver/PasswordResolver.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web-commons-autoconfigure/src/main/java/com/seagetech/web/commons/view/load/resolver/PrimaryKeyResolver.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web-commons-autoconfigure/src/main/java/com/seagetech/web/commons/view/load/resolver/UseLoginUserNameResolver.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web-commons-autoconfigure/src/main/java/com/seagetech/web/commons/view/load/resolver/UserStatusResolver.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web-commons-autoconfigure/src/main/java/com/seagetech/web/commons/view/load/resolver/UserStatusResolverList.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-commons-autoconfigure/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/web-commons-autoconfigure/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-commons-autoconfigure/src/main/java/com/seagetech/web/commons/bind/FunctionType.java" beforeDir="false" afterPath="$PROJECT_DIR$/web-commons-autoconfigure/src/main/java/com/seagetech/web/commons/bind/FunctionType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-commons-autoconfigure/src/main/java/com/seagetech/web/commons/login/LoginAutoConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/web-commons-autoconfigure/src/main/java/com/seagetech/web/commons/login/LoginAutoConfiguration.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-commons-autoconfigure/src/main/java/com/seagetech/web/commons/login/LoginProperties.java" beforeDir="false" afterPath="$PROJECT_DIR$/web-commons-autoconfigure/src/main/java/com/seagetech/web/commons/login/LoginProperties.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-commons-autoconfigure/src/main/java/com/seagetech/web/commons/login/session/DefaultSessionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/web-commons-autoconfigure/src/main/java/com/seagetech/web/commons/login/session/DefaultSessionHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-commons-autoconfigure/src/main/java/com/seagetech/web/commons/login/session/ISessionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/web-commons-autoconfigure/src/main/java/com/seagetech/web/commons/login/session/ISessionHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-commons-autoconfigure/src/main/java/com/seagetech/web/commons/view/entity/dto/BasedUserDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/web-commons-autoconfigure/src/main/java/com/seagetech/web/commons/view/entity/dto/BasedUserDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-commons-autoconfigure/src/main/java/com/seagetech/web/commons/view/load/PageViewInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/web-commons-autoconfigure/src/main/java/com/seagetech/web/commons/view/load/PageViewInfo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-commons-autoconfigure/src/main/java/com/seagetech/web/commons/view/load/PageViewLoadRegistrar.java" beforeDir="false" afterPath="$PROJECT_DIR$/web-commons-autoconfigure/src/main/java/com/seagetech/web/commons/view/load/PageViewLoadRegistrar.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-commons-autoconfigure/src/main/java/com/seagetech/web/commons/view/mapper/def/PasswordDefaultValue.java" beforeDir="false" afterPath="$PROJECT_DIR$/web-commons-autoconfigure/src/main/java/com/seagetech/web/commons/view/mapper/def/PasswordDefaultValue.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-commons-autoconfigure/src/main/resources/META-INF/spring-configuration-metadata.json" beforeDir="false" afterPath="$PROJECT_DIR$/web-commons-autoconfigure/src/main/resources/META-INF/spring-configuration-metadata.json" afterDir="false" />
+    </list>
+>>>>>>> Stashed changes
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -149,8 +194,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Enum" />
-        <option value="AnnotationType" />
         <option value="Interface" />
+        <option value="AnnotationType" />
         <option value="Class" />
       </list>
     </option>
@@ -1214,15 +1259,15 @@
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
-    <property name="settings.editor.selected.configurable" value="MavenSettings" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
   </component>
   <component name="RecentsManager">
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.seagetech.web.commons.login.shiro" />
       <recent name="com.seagetech.web.commons.view.mapper" />
       <recent name="com.seagetech.web.commons.view.service.impl" />
       <recent name="com.seagetech.web.commons.view.service" />
       <recent name="com.seagetech.web.commons.view.entity.dto" />
-      <recent name="com.seagetech.web.commons.view.config" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="D:\JAVA\idea_project\seagetech\common\seagetec-web\web-commons-autoconfigure\src\main\resources\META-INF" />
@@ -1660,11 +1705,22 @@
       <workItem from="1577079740120" duration="215000" />
       <workItem from="1577080071269" duration="66627000" />
       <workItem from="1577756380031" duration="9512000" />
+<<<<<<< Updated upstream
       <workItem from="1577951654016" duration="16824000" />
       <workItem from="1578274318845" duration="32631000" />
       <workItem from="1578381430118" duration="483000" />
       <workItem from="1578387680087" duration="17904000" />
       <workItem from="1578475816872" duration="9623000" />
+=======
+      <workItem from="1577951654016" duration="18015000" />
+      <workItem from="1578273674173" duration="69054000" />
+      <workItem from="1578561408185" duration="4562000" />
+      <workItem from="1578619890256" duration="28000" />
+      <workItem from="1578620580998" duration="8000" />
+      <workItem from="1578620731443" duration="247000" />
+      <workItem from="1578621037635" duration="212000" />
+      <workItem from="1578621304560" duration="11064000" />
+>>>>>>> Stashed changes
     </task>
     <task id="LOCAL-00001" summary="Default Changelist">
       <created>1578277592776</created>
@@ -1722,6 +1778,7 @@
       <option name="project" value="LOCAL" />
       <updated>1578391569046</updated>
     </task>
+<<<<<<< Updated upstream
     <task id="LOCAL-00009" summary="Default Changelist">
       <created>1578539733734</created>
       <option name="number" value="00009" />
@@ -1737,6 +1794,23 @@
       <updated>1578627075092</updated>
     </task>
     <option name="localTasksCounter" value="11" />
+=======
+    <task id="LOCAL-00003" summary="新增add功能，并实现参数的验证">
+      <created>1578533007150</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1578533007150</updated>
+    </task>
+    <task id="LOCAL-00004" summary="修改add功能的bug">
+      <created>1578536844440</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1578536844440</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
+>>>>>>> Stashed changes
     <servers />
   </component>
   <component name="TimeTrackingManager">
@@ -1862,6 +1936,7 @@
         <entry key="MAIN">
           <value>
             <State>
+<<<<<<< Updated upstream
               <option name="RECENTLY_FILTERED_USER_GROUPS">
                 <collection />
               </option>
@@ -1876,6 +1951,9 @@
                   <option value="3" />
                 </list>
               </option>
+=======
+              <option name="COLUMN_ORDER" />
+>>>>>>> Stashed changes
             </State>
           </value>
         </entry>
@@ -1883,6 +1961,7 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
+<<<<<<< Updated upstream
     <MESSAGE value="Default Changelist" />
     <MESSAGE value="导入功能修改，允许从字典表获取数据，允许赋予默认值" />
     <option name="LAST_COMMIT_MESSAGE" value="导入功能修改，允许从字典表获取数据，允许赋予默认值" />
@@ -2393,5 +2472,22 @@
         </settings>
       </state>
     </states>
+=======
+    <MESSAGE value="新增add功能" />
+    <MESSAGE value="新增add功能，并实现参数的验证" />
+    <MESSAGE value="修改add功能的bug" />
+    <option name="LAST_COMMIT_MESSAGE" value="修改add功能的bug" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/web-commons-autoconfigure/src/main/java/com/seagetech/web/commons/view/load/resolver/PrimaryKeyResolver.java</url>
+          <line>25</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+>>>>>>> Stashed changes
   </component>
 </project>

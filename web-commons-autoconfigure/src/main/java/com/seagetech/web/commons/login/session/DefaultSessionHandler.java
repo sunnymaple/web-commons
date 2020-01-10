@@ -1,24 +1,41 @@
 package com.seagetech.web.commons.login.session;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
-import javax.servlet.http.HttpSession;
+import com.seagetech.web.commons.login.entity.DefaultLoginUser;
 
 /**
- * session
+ * 默认的session处理器
  * @author wangzb
- * @date 2019/11/28 15:35
+ * @date 2020/1/10 12:00
  * @company 矽甲（上海）信息科技有限公司
  */
-public abstract class DefaultSessionHandler<T> implements ISessionHandler<T>{
+public class DefaultSessionHandler extends AbstractSessionHandler<DefaultLoginUser>{
     /**
-     * 注入HttpSession
+     * 获取session中的user对象
+     *
+     * @return
      */
-    @Autowired
-    protected HttpSession session;
+    @Override
+    public DefaultLoginUser getUser() {
+        return (DefaultLoginUser) session.getAttribute(USER_SESSION_NAME);
+    }
 
     /**
-     * 用户的session的名称
+     * 获取用户名
+     *
+     * @return
      */
-    protected static final String USER_SESSION_NAME = "userSession";
+    @Override
+    public Object getUserName() {
+        return getUser().getUserId() + "";
+    }
+
+    /**
+     * 设置用户信息到session中
+     *
+     * @param user
+     */
+    @Override
+    public void setSession(DefaultLoginUser user) {
+        session.setAttribute(USER_SESSION_NAME,user);
+    }
 }

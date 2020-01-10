@@ -41,14 +41,21 @@
 		<dependency>
 			<groupId>com.seagetech</groupId>
 			<artifactId>web-springboot-starter</artifactId>
-			<version>1.0.1</version>
+			<version>1.0.2</version>
 		</dependency>
 
-		<!--<dependency>
+		<dependency>
 			<groupId>org.apache.shiro</groupId>
-			<artifactId>shiro-spring-boot-starter</artifactId>
-			<version>1.4.2</version>
-		</dependency>-->
+			<artifactId>shiro-all</artifactId>
+			<version>1.4.0</version>
+			<exclusions>
+				<exclusion>
+					<groupId>com.hazelcast</groupId>
+					<artifactId>hazelcast</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>

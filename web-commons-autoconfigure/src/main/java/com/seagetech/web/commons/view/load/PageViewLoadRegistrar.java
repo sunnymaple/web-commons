@@ -35,7 +35,7 @@ public class PageViewLoadRegistrar implements ImportBeanDefinitionRegistrar {
     /**
      * 默认包路径
      */
-    private final String DEFAULT_PACKAGE_NAME = "com.seagetech.web.commons";
+    private final String DEFAULT_PACKAGE_NAME = "com.seagetech.web.commons.view";
 
     /**
      * Register bean definitions as necessary based on the given annotation metadata of
@@ -56,8 +56,10 @@ public class PageViewLoadRegistrar implements ImportBeanDefinitionRegistrar {
         //扫描的包
         AnnotationAttributes attributes = getAttributes(importingClassMetadata);
         String[] scanBasePackages = (String[]) attributes.get("scanBasePackages");
-        List<String> scanBasePackageList = new ArrayList<>(Arrays.asList(scanBasePackages));
-        scanBasePackageList.add(DEFAULT_PACKAGE_NAME + ".view.entity");
+        List<String> scanBasePackageList = new ArrayList<>();
+        scanBasePackageList.add(DEFAULT_PACKAGE_NAME + ".entity");
+        scanBasePackageList.addAll(Arrays.asList(scanBasePackages));
+
         //添加视图数据
         ClassPathScanningCandidateComponentProvider provider = new ClassPathScanningCandidateComponentProvider(false);
         provider.addIncludeFilter(new AnnotationTypeFilter(PageView.class));
