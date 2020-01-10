@@ -1,12 +1,15 @@
 package com.seagetech.web.commons.view.mapper;
 
 import com.seagetech.web.commons.view.mapper.provider.DynamicDeleteProvider;
+import com.seagetech.web.commons.view.mapper.provider.DynamicImportProvider;
 import com.seagetech.web.commons.view.mapper.provider.DynamicInsertProvider;
 import com.seagetech.web.commons.view.mapper.provider.DynamicSelectProvider;
 import org.apache.ibatis.annotations.DeleteProvider;
 import org.apache.ibatis.annotations.InsertProvider;
 import org.apache.ibatis.annotations.SelectProvider;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 
@@ -37,9 +40,16 @@ public interface PageViewMapper {
 
     /**
      * 根据主键删除
-     * @param viewName
-     * @param deleteId
+     * @param viewName 视图名称
+     * @param deleteId 删除主键ID
      */
     @DeleteProvider(type = DynamicDeleteProvider.class,method = "deleteById")
     void deleteById(String viewName, Integer deleteId);
+
+    /**
+     * 导入文件插入数据库
+     * @param sqlMap 插入数据
+     */
+    @InsertProvider(type = DynamicImportProvider.class, method = "batchImport")
+    void importTable(List<Map<String,Object>> sqlMap,String tableName);
 }

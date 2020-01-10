@@ -1,5 +1,8 @@
 package com.seagetech.web.commons.view.service;
 
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 
@@ -33,4 +36,10 @@ public interface PageViewService {
      */
     void deleteById(String viewName, Integer deleteId);
 
+    /**
+     * 导入文件
+     * @param viewName
+     * @param dataPic
+     */
+    void importTable(String viewName, MultipartFile dataPic,HttpServletRequest request) throws Exception;
 }

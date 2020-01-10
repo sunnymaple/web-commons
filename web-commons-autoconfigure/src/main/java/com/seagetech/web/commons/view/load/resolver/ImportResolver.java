@@ -21,7 +21,9 @@ public class ImportResolver extends AbstractResolver<Import, ImportInfo> {
                 .setColumnName(SeageUtils.isEmpty(annotation.columnName()) ?
                         SeageUtils.upperUnderScore(field.getName()) : annotation.columnName())
                 .setFieldType(annotation.fieldType())
-                .setName(annotation.name());
+                .setName(SeageUtils.isEmpty(annotation.name()) ? field.getName() : annotation.name())
+                .setDefaultValue(annotation.defaultValue())
+                .setOption(annotation.option());
         return Stream.of(importInfo).collect(Collectors.toList());
     }
 }

@@ -32,4 +32,13 @@ public class ImportInfo implements IFunctionInfo {
      * 第几列
      */
     private Integer col;
+    /**
+     * 默认值
+     * 可以指定具体的值，如1,2这样的数字，或者指定一个字符串："张三"、"abc"
+     */
+    private String defaultValue;
+    /**
+     * 导入内容是否有和字典表关联的内容
+     */
+    private  Class<?> option;
 }

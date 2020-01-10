@@ -57,6 +57,10 @@ public class PageViewInfo extends HashMap<FunctionType,List<IFunctionInfo>> {
      * 类
      */
     private Class pageViewClass;
+    /**
+     * excel从第几行开始读取
+     */
+    private Integer row;
 
     /**
      * 判断是否开启自定义功能

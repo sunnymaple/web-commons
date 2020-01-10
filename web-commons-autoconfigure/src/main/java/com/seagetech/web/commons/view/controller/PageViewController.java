@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -84,4 +85,14 @@ public class PageViewController {
         pageViewService.deleteById(viewName, deleteId);
     }
 
+    /**
+     * 文件导入
+     * @param viewName 视图名称
+     * @param dataPic 导入文件文件
+     */
+    @PostMapping("/importTable/{viewName}")
+    public String importTable(@PathVariable(value = "viewName") String viewName, MultipartFile dataPic) throws Exception {
+        pageViewService.importTable(viewName,dataPic,request);
+        return "导入成功";
+    }
 }

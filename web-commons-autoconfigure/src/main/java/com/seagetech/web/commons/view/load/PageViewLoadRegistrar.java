@@ -118,7 +118,8 @@ public class PageViewLoadRegistrar implements ImportBeanDefinitionRegistrar {
                         .setViewName(pageView.value())
                         .setTableId(pageView.tableId())
                         .setPageViewClass(beanClass)
-                        .setViewPath(pageView.viewPath());
+                        .setViewPath(pageView.viewPath())
+                        .setRow(pageView.row());
                 //自定义
                 FunctionType[] functionTypes = pageView.enableCustomFunctions();
                 if (!SeageUtils.isEmpty(functionTypes)){

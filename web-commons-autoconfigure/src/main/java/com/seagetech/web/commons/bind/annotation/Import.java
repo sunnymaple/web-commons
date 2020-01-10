@@ -1,8 +1,10 @@
 package com.seagetech.web.commons.bind.annotation;
 
 import com.seagetech.web.commons.bind.FunctionType;
+import com.seagetech.web.commons.view.load.IOption;
 import com.seagetech.web.commons.view.load.resolver.DeleteResolver;
 import com.seagetech.web.commons.view.load.resolver.ImportResolver;
+import org.apache.ibatis.jdbc.Null;
 
 import java.io.Serializable;
 import java.lang.annotation.*;
@@ -39,4 +41,16 @@ public @interface Import {
      * @return
      */
     int col() default 0;
+    /**
+     * 默认值
+     * 可以指定具体的值，如1,2这样的数字，或者指定一个字符串："张三"、"abc"
+     * 同时支持特定的参数：
+     * 1、当前系统时间：#date|yyyy-MM-dd HH:mm:ss
+     *     其中“#date|”为固定格式，"|"后面为日期格式
+     * 2、当前操作用户：#user
+     * @return
+     */
+    String defaultValue() default "";
+
+    Class<?> option() default Void.class;
 }

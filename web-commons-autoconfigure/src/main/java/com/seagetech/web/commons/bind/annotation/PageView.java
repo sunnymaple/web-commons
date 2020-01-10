@@ -58,4 +58,10 @@ public @interface PageView {
      * @return
      */
     String customClass() default "";
+
+    /**
+     * excel从第几行开始读取
+     * @return
+     */
+    int row() default 1;
 }
