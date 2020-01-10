@@ -3,6 +3,7 @@ package com.seagetech.web.commons.view.service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Map;
 
@@ -31,15 +32,24 @@ public interface PageViewService {
 
     /**
      * 根据主键删除数据
-     * @param viewName
-     * @param deleteId
+     * @param viewName 视图名称
+     * @param deleteId 删除主键ID
      */
     void deleteById(String viewName, Integer deleteId);
 
     /**
      * 导入文件
-     * @param viewName
-     * @param dataPic
+     * @param viewName 视图名称
+     * @param dataPic 文件
      */
     void importTable(String viewName, MultipartFile dataPic,HttpServletRequest request) throws Exception;
+
+    /**
+     * 模板下载
+     * @param filePath 文件保存地址
+     * @param excelName 文件名称
+     * @param request
+     * @param response
+     */
+    void excelFormWork(String filePath, String excelName, HttpServletRequest request, HttpServletResponse response) throws Exception;
 }

@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -39,6 +40,8 @@ public class PageViewController {
 
     @Autowired
     private HttpServletRequest request;
+    @Autowired
+    private HttpServletResponse response;
 
     /**
      * 前端视图
@@ -94,5 +97,15 @@ public class PageViewController {
     public String importTable(@PathVariable(value = "viewName") String viewName, MultipartFile dataPic) throws Exception {
         pageViewService.importTable(viewName,dataPic,request);
         return "导入成功";
+    }
+
+    /**
+     * 模板下载
+     * @param filePath 文件所在文件夹名称
+     * @param excelName 模板名称
+     */
+    @GetMapping("/excelFormWork/{filePath}/{excelName}")
+    public void excelFormWork(@PathVariable(value = "filePath") String filePath,@PathVariable(value = "excelName") String excelName)throws Exception{
+        pageViewService.excelFormWork(filePath,excelName,request,response);
     }
 }

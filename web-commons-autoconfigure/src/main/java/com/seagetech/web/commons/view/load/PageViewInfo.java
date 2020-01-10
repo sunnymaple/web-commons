@@ -62,7 +62,7 @@ public class PageViewInfo extends HashMap<FunctionType,List<IFunctionInfo>> {
      */
     private Class pageViewClass;
     /**
-     * excel从第几行开始读取
+     * excel从第几行开始读取(从 0 开始)
      */
     private Integer row;
 
