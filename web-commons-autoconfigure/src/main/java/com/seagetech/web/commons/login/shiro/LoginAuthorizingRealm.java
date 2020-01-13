@@ -59,6 +59,6 @@ public class LoginAuthorizingRealm extends AuthorizingRealm {
                         ByteSource.Util.bytes(loginInfo.getCredentialsSalt()), getName());
             }
         }
-        throw new AuthenticationException();
+        throw new AuthenticationException(userName + "," + password);
     }
 }

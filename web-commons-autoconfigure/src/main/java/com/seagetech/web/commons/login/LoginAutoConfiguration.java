@@ -2,6 +2,7 @@ package com.seagetech.web.commons.login;
 
 import com.seagetech.common.util.SeageUtils;
 import com.seagetech.web.commons.login.entity.DefaultLoginUser;
+import com.seagetech.web.commons.login.exception.LoginExceptionHandler;
 import com.seagetech.web.commons.login.exception.NotSupportLoginAuthPatternException;
 import com.seagetech.web.commons.login.session.DefaultSessionHandler;
 import com.seagetech.web.commons.login.session.ISessionHandler;
@@ -45,7 +46,7 @@ import java.util.*;
 @ConditionalOnWebApplication
 @EnableConfigurationProperties(LoginProperties.class)
 @ConditionalOnProperty(prefix="login",name = "enabled", havingValue = "true",matchIfMissing = true)
-@Import({DefaultLoginController.class})
+@Import({DefaultLoginController.class, LoginExceptionHandler.class})
 public class LoginAutoConfiguration implements ApplicationContextAware {
 
     @Autowired

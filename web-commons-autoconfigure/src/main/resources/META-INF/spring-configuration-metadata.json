@@ -73,5 +73,15 @@
       "type": "java.lang.String",
       "description": "登录用户实体",
       "defaultValue": "com.seagetech.web.commons.login.entity.DefaultLoginUser"
+    },{
+      "sourceType": "com.seagetech.web.commons.login.LoginProperties",
+      "name": "login.anon",
+      "type": "java.lang.String[]",
+      "description": "不通过登录验证的接口"
+    },{
+      "sourceType": "com.seagetech.web.commons.login.LoginProperties",
+      "name": "login.authc",
+      "type": "java.lang.String[]",
+      "description": "指定需要登录验证的接口，谨慎使用，如果指定该属性，那么除了该指定的接口之外，其他接口都不需要验证"
     }]
 }

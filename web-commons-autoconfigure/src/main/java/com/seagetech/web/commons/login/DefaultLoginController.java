@@ -27,7 +27,7 @@ import java.util.Objects;
 @Validated
 public class DefaultLoginController {
 
-    @Autowired
+    @Autowired(required = false)
     private ISessionHandler sessionHandler;
 
     /**

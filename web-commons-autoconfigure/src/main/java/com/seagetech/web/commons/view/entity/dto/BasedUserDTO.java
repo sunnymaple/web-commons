@@ -32,6 +32,8 @@ public class BasedUserDTO implements Serializable {
      * 用户表注解
      */
     @Delete(columnName = "user_id",deleteType = 1)
+    @Query
+    @PrimaryKey
     private Integer userId;
 
     /**
@@ -41,6 +43,7 @@ public class BasedUserDTO implements Serializable {
     @Add(label="用户名",unique = true)
     @NotNull(message = "姓名不能为空！")
     @Import(col = 1)
+    @UseLoginUserName
     private String userName;
 
     /**
@@ -57,6 +60,9 @@ public class BasedUserDTO implements Serializable {
      */
     @Query(label="状态")
     @Add(label="状态",defaultValue = "1")
+    @UserStatus(value = "1",valid = true)
+    @UserStatus(value = "2",message = "用户已过期！")
+    @UserStatus(value = "0",message = "用户名或密码错误！")
     private Integer status;
     /**
      * 状态名称
@@ -84,6 +90,7 @@ public class BasedUserDTO implements Serializable {
     @Telephone
     @NotNull(message = "手机号不能为空！")
     @Import(col = 4)
+    @UseLoginUserName
     private String telephone;
 
     /**
@@ -122,6 +129,7 @@ public class BasedUserDTO implements Serializable {
      */
     @Add(defaultValue = "#password")
     @Import(col = -1,defaultValue = "#password")
+    @Password
     private String password;
     /**
      * 创建人

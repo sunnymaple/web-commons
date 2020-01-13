@@ -1,6 +1,7 @@
 package com.seagetech.web.commons.login.session;
 
 import com.seagetech.web.commons.login.entity.DefaultLoginUser;
+import com.seagetech.web.commons.login.exception.NotLoginException;
 
 /**
  * 默认的session处理器
@@ -15,8 +16,12 @@ public class DefaultSessionHandler extends AbstractSessionHandler<DefaultLoginUs
      * @return
      */
     @Override
-    public DefaultLoginUser getUser() {
-        return (DefaultLoginUser) session.getAttribute(USER_SESSION_NAME);
+    public DefaultLoginUser getUser() throws NotLoginException{
+        DefaultLoginUser user = (DefaultLoginUser) session.getAttribute(USER_SESSION_NAME);
+        if (user == null){
+            throw new NotLoginException();
+        }
+        return user;
     }
 
     /**
@@ -25,7 +30,7 @@ public class DefaultSessionHandler extends AbstractSessionHandler<DefaultLoginUs
      * @return
      */
     @Override
-    public Object getUserName() {
+    public Object getUserName() throws NotLoginException{
         return getUser().getUserId() + "";
     }
 

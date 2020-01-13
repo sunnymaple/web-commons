@@ -21,7 +21,6 @@ import java.io.Serializable;
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
 @TableName("tb_based_user")
-
 public class BasedUser implements Serializable {
 
     private static final long serialVersionUID = 1L;
