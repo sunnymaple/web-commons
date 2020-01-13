@@ -85,7 +85,8 @@ public class PageViewInfo extends HashMap<FunctionType,List<IFunctionInfo>> {
 
     /**
      * 没有获取到时抛出异常
-     * @param key 
+     * @param key
+     * @throws DisabledFunctionException
      * @return
      */
     public List<IFunctionInfo> getThrow(Object key) {

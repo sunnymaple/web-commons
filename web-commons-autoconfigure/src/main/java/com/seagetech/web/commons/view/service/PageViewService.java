@@ -31,6 +31,13 @@ public interface PageViewService {
     void add(String viewName,Map<String,Object> params);
 
     /**
+     * 修改功能
+     * @param viewName 视图名称
+     * @param params 修改内容
+     */
+    void update(String viewName,Map<String,Object> params);
+
+    /**
      * 根据主键删除数据
      * @param viewName 视图名称
      * @param deleteId 删除主键ID

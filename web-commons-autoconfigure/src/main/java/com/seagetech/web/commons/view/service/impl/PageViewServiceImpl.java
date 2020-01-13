@@ -90,6 +90,27 @@ public class PageViewServiceImpl implements PageViewService, ApplicationContextA
             pageViewInfo.getPageViewCustom().customAdd(viewName, params);
         }
         //判重
+        distinct(pageViewInfo,params);
+        //插入数据
+        pageViewMapper.insert(sessionHandler.getUser(), viewName, params);
+    }
+
+    /**
+     * 去重
+     * @param pageViewInfo
+     * @param params
+     */
+    private void distinct(PageViewInfo pageViewInfo,Map<String, Object> params){
+        distinct(pageViewInfo,params,null);
+    }
+
+    /**
+     * 去重
+     * @param pageViewInfo
+     * @param params
+     * @param primaryKey 是否更新
+     */
+    private void distinct(PageViewInfo pageViewInfo,Map<String, Object> params,String primaryKey){
         List<IFunctionInfo> functionInfos = pageViewInfo.get(FunctionType.ADD);
         functionInfos.forEach(iFunctionInfo -> {
             AddInfo addInfo = (AddInfo) iFunctionInfo;
@@ -99,15 +120,48 @@ public class PageViewServiceImpl implements PageViewService, ApplicationContextA
                 if (!SeageUtils.isEmpty(value)) {
                     Map<String, Object> queryParams = new HashMap<>(1);
                     queryParams.put(name, value);
-                    List<Map<String, Object>> result = getListByPage(viewName, queryParams);
-                    if (result != null && result.size() > 0) {
-                        throw new UniqueException(value + "已存在!");
+                    List<Map<String, Object>> results = getListByPage(pageViewInfo.getViewName(), queryParams);
+                    if (results != null && results.size() > 0) {
+                        if (SeageUtils.isEmpty(primaryKey) || results.size()>1){
+                            throw new UniqueException(value + "已存在!");
+                        }
+                        Map<String, Object> result = results.get(0);
+                        PrimaryKeyInfo primaryKeyInfo = pageViewInfo.getPrimaryKey();
+                        String primaryKeyName = primaryKeyInfo.getName();
+                        Object resultPrimaryKey = result.get(primaryKeyName);
+                        if (!SeageUtils.isEmpty(resultPrimaryKey) && !Objects.equals(resultPrimaryKey.toString(),primaryKey)){
+                            throw new UniqueException(value + "已存在!");
+                        }
                     }
+
                 }
             }
         });
-        //插入数据
-        pageViewMapper.insert(sessionHandler.getUser(), viewName, params);
+    }
+
+    /**
+     * 修改功能
+     *
+     * @param viewName 视图名称
+     * @param params   修改内容
+     */
+    @Override
+    public void update(String viewName, Map<String, Object> params) {
+        PageViewContainer pageViewContainer = PageViewContainer.getInstance();
+        PageViewInfo pageViewInfo = pageViewContainer.get(viewName);
+        boolean enableCustomUpdate = pageViewInfo.enableCustomFunction(FunctionType.UPDATE);
+        if (enableCustomUpdate){
+            pageViewInfo.getPageViewCustom().customUpdate(viewName, params);
+        }
+        //获取主键
+        PrimaryKeyInfo primaryKeyInfo = pageViewInfo.getPrimaryKey();
+        String primaryKeyName = primaryKeyInfo.getName();
+        Optional<Object> primaryKeyOp = Optional.ofNullable(params.get(primaryKeyName));
+        String primaryKey = primaryKeyOp.orElseThrow(() -> new ParamVerifyException("主键值" + primaryKeyName + "不能为空！")).toString();
+        //判重
+        distinct(pageViewInfo,params,primaryKey);
+        //
+        pageViewMapper.update(sessionHandler.getUser(), viewName, params);
     }
 
     /**
@@ -285,7 +339,7 @@ public class PageViewServiceImpl implements PageViewService, ApplicationContextA
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        applicationContext = this.applicationContext;
+        this.applicationContext = applicationContext;
     }
 
     /**

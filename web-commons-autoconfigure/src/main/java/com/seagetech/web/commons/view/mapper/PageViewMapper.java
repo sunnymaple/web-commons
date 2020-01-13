@@ -1,12 +1,10 @@
 package com.seagetech.web.commons.view.mapper;
 
-import com.seagetech.web.commons.view.mapper.provider.DynamicDeleteProvider;
-import com.seagetech.web.commons.view.mapper.provider.DynamicImportProvider;
-import com.seagetech.web.commons.view.mapper.provider.DynamicInsertProvider;
-import com.seagetech.web.commons.view.mapper.provider.DynamicSelectProvider;
+import com.seagetech.web.commons.view.mapper.provider.*;
 import org.apache.ibatis.annotations.DeleteProvider;
 import org.apache.ibatis.annotations.InsertProvider;
 import org.apache.ibatis.annotations.SelectProvider;
+import org.apache.ibatis.annotations.UpdateProvider;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -37,6 +35,9 @@ public interface PageViewMapper {
      */
     @InsertProvider(type = DynamicInsertProvider.class, method = "createSql")
     void insert(Object userId,String viewName,Map<String, Object> params);
+
+    @UpdateProvider(type = DynamicUpdateProvider.class,method = "createSql")
+    void update(Object userId,String viewName,Map<String, Object> params);
 
     /**
      * 根据主键删除

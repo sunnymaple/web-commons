@@ -1,11 +1,14 @@
 package com.seagetech.web.commons.view.entity.dto;
 
 import com.seagetech.web.commons.bind.annotation.PageView;
+import com.seagetech.web.commons.bind.annotation.PrimaryKey;
 import com.seagetech.web.commons.bind.annotation.Query;
 import com.seagetech.web.commons.view.DefaultViewName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
+
+import javax.validation.constraints.NotBlank;
 
 /**
  * 角色
@@ -22,14 +25,18 @@ public class BasedRoleDTO {
      * 角色ID
      */
     @Query
+    @PrimaryKey
     private Integer roleId;
     /**
      * 角色名称
      */
+    @Query(label = "角色名称")
+    @NotBlank(message = "角色名称不能为空！")
     private String roleName;
     /**
      * 上级角色
      */
+    @Query(label = "上级角色")
     private Integer pRoleId;
     /**
      * 上级角色名称

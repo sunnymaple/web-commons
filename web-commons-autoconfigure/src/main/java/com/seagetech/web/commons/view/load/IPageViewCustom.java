@@ -28,6 +28,13 @@ public interface IPageViewCustom {
     default void customAdd(String viewName, Map<String, Object> params){};
 
     /**
+     * 更新修改功能
+     * @param viewName 视图名称
+     * @param params 参数对象
+     */
+    default void customUpdate(String viewName, Map<String, Object> params){};
+
+    /**
      * 自定义删除操作
      * @param viewName 视图名称
      * @param params 新增内容

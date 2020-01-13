@@ -1,7 +1,5 @@
 package com.seagetech.web.commons.view.controller;
 
-import com.seagetech.common.exception.ParamException;
-import com.seagetech.common.util.SeageJson;
 import com.seagetech.web.bind.PageHandlerType;
 import com.seagetech.web.bind.annotation.PageHandler;
 import com.seagetech.web.commons.util.Utils;
@@ -77,6 +75,19 @@ public class PageViewController {
         pageViewService.add(viewName,Utils.getParameter(request));
         return "添加成功!";
     }
+
+    /**
+     *
+     * @param viewName 视图名称
+     * @return
+     */
+    @RequestMapping(value = "/update/{viewName}",produces = "application/json")
+    @ParamValidated
+    public String update(@PathVariable(value = "viewName") String viewName) {
+        pageViewService.update(viewName,Utils.getParameter(request));
+        return "修改成功!";
+    }
+
 
     /**
      * 删除操作
