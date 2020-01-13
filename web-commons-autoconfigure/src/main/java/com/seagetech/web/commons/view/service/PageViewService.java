@@ -52,4 +52,13 @@ public interface PageViewService {
      * @param response
      */
     void excelFormWork(String filePath, String excelName, HttpServletRequest request, HttpServletResponse response) throws Exception;
+
+    /**
+     * 导出文件
+     * @param viewName 视图名称
+     * @param parameter 参数
+     * @param request
+     * @param response
+     */
+    void exportExcel(String viewName, Map<String, Object> parameter, HttpServletRequest request, HttpServletResponse response) throws Exception;
 }

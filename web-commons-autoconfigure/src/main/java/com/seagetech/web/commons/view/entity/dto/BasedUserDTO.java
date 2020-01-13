@@ -44,6 +44,7 @@ public class BasedUserDTO implements Serializable {
     @NotNull(message = "姓名不能为空！")
     @Import(col = 1)
     @UseLoginUserName
+    @Export(col = 1,headName = "用户名")
     private String userName;
 
     /**
@@ -53,6 +54,7 @@ public class BasedUserDTO implements Serializable {
     @Add(label="姓名")
     @NotNull(message = "姓名不能为空！")
     @Import(col = 2)
+    @Export(col = 2,headName = "姓名")
     private String nickname;
 
     /**
@@ -76,6 +78,7 @@ public class BasedUserDTO implements Serializable {
     @Add(label="性别")
     @NotNull(message = "性别不能为空！")
     @Import(col = 3)
+    @Export(col = 3,headName = "性别")
     private String gender;
     /**
      * 性别名称
@@ -91,6 +94,7 @@ public class BasedUserDTO implements Serializable {
     @NotNull(message = "手机号不能为空！")
     @Import(col = 4)
     @UseLoginUserName
+    @Export(col = 4,headName = "手机号")
     private String telephone;
 
     /**
@@ -100,6 +104,7 @@ public class BasedUserDTO implements Serializable {
     @Email
     @Add(label="邮箱")
     @Import(col = 5)
+    @Export(col = 5,headName = "邮箱")
     private String email;
 
     /**
@@ -108,12 +113,14 @@ public class BasedUserDTO implements Serializable {
     @Query(condition= Condition.LIKE,label="身份证")
     @Add(label="身份证")
     @Import(col = 6)
+    @Export(col = 6,headName = "身份证")
     private String idCard;
 
     /**
      * 年龄，可以通过身份证号计算
      */
     @Import(col = 7)
+    @Export(col = 8,headName = "年龄")
     private Integer age;
 
     /**

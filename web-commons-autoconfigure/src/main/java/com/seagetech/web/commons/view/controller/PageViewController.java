@@ -108,4 +108,9 @@ public class PageViewController {
     public void excelFormWork(@PathVariable(value = "filePath") String filePath,@PathVariable(value = "excelName") String excelName)throws Exception{
         pageViewService.excelFormWork(filePath,excelName,request,response);
     }
+
+    @GetMapping("/exportExcel/{viewName}")
+    public void exportExcel(@PathVariable(value = "viewName") String viewName) throws Exception{
+        pageViewService.exportExcel(viewName, Utils.getParameter(request),request,response);
+    }
 }

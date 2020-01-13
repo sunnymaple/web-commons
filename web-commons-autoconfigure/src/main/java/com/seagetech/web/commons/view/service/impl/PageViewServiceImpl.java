@@ -1,9 +1,11 @@
 package com.seagetech.web.commons.view.service.impl;
 
+import cn.afterturn.easypoi.exception.excel.ExcelExportException;
 import com.seagetech.common.util.SeageJson;
 import com.seagetech.common.util.SeageUtils;
 import com.seagetech.web.commons.bind.FunctionType;
 import com.seagetech.web.commons.login.session.ISessionHandler;
+import com.seagetech.web.commons.util.ExcelUtils;
 import com.seagetech.web.commons.view.exception.UniqueException;
 import com.seagetech.web.commons.view.load.*;
 import com.seagetech.web.commons.view.load.exception.FileDownLoadException;
@@ -12,7 +14,7 @@ import com.seagetech.web.commons.view.mapper.def.DefaultValueEnum;
 import com.seagetech.web.commons.view.mapper.def.IDefaultValue;
 import com.seagetech.web.commons.view.service.PageViewService;
 import com.seagetech.web.exception.ParamVerifyException;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.poi.ss.usermodel.*;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +47,10 @@ public class PageViewServiceImpl implements PageViewService, ApplicationContextA
 
     @Autowired
     private ISessionHandler sessionHandler;
+
+    @Autowired
+    private Validator validator;
+
     private ApplicationContext applicationContext;
 
 
@@ -148,7 +154,9 @@ public class PageViewServiceImpl implements PageViewService, ApplicationContextA
         //不需要视图，直接使用表名称
         String tableName = pageViewInfo.getTable();
         List<IFunctionInfo> functionInfos = pageViewInfo.get(FunctionType.IMPORT);
-
+        if(CollectionUtils.isEmpty(functionInfos)){
+            throw new ExcelExportException("未查找到需要导入信息");
+        }
         List<Map<String, Object>> columns = new ArrayList<>();
         for (int j = firstRow; j <= sheet.getLastRowNum(); j++) {
             Row row = sheet.getRow(j);
@@ -166,7 +174,6 @@ public class PageViewServiceImpl implements PageViewService, ApplicationContextA
                     iDefaultValue = defClass.newInstance();
                     String defaultValue = iDefaultValue.getDefaultValue("1", importInfo.getName(), importInfo.getDefaultValue());
                     values.put(importInfo.getColumnName().toLowerCase(), defaultValue);
-
                 } else {
                     //默认为Void，如果被改了，需要重新获取
                     //字典表查询数据
@@ -202,54 +209,49 @@ public class PageViewServiceImpl implements PageViewService, ApplicationContextA
         if (SeageUtils.isEmpty(excelName)) {
             throw new FileDownLoadException("文件名称不能为空");
         }
-        FileInputStream in = null;
-        OutputStream out = null;
-        File file = null;
-        //项目根目录（绝对路径）
-        String filePath = getClass().getResource("/").getPath() + filePaths + File.separator;
-        //导出excel文件名称,包括后缀名
-        //2 拼接excel、
-        resp.setContentType("multipart/form-data");
-        resp.setHeader("Content-disposition", "attachment; filename="
-                + encodeChineseDownloadFileName(req, excelName));
-        //excel文件下载路径（相对路径，因为下载时使用的是相对路径）
-        file = new File(filePath + excelName);
-        in = new FileInputStream(file);
-        //通过response获取OutputStream对象(out)
-        out = new BufferedOutputStream(resp.getOutputStream());
-        int b = 0;
-        byte[] buffer = new byte[2048];
-        while ((b = in.read(buffer)) != -1) {
-            //输出到客户端
-            out.write(buffer, 0, b);
-            out.flush();
-        }
-        out.close();
+        ExcelUtils excelUtils = new ExcelUtils();
+        excelUtils.downLoad(excelName, filePaths, req, resp);
     }
 
     /**
-     * 文件名格式化
+     * excel表格导出
+     *
+     * @param viewName 视图名称
+     * @param params   查询所用到的参数
+     * @param request
+     * @param response
      */
-    private static String encodeChineseDownloadFileName(HttpServletRequest req, String pFileName) throws UnsupportedEncodingException {
-        String filename = null;
-        String agent = req.getHeader("USER-AGENT");
-        if (null != agent) {
-            if (-1 != agent.indexOf("Firefox")) {//Firefox
-                filename = "=?UTF-8?B?" + (new String(org.apache.commons.codec.binary.Base64.encodeBase64(pFileName.getBytes("UTF-8")))) + "?=";
-            } else if (-1 != agent.indexOf("Chrome")) {//Chrome
-                filename = new String(pFileName.getBytes(), "ISO8859-1");
-            } else {//IE7+
-                filename = java.net.URLEncoder.encode(pFileName, "UTF-8");
-                filename = StringUtils.replace(filename, "+", "%20");//替换空格
-            }
-        } else {
-            filename = pFileName;
+    @Override
+    public void exportExcel(String viewName, Map<String, Object> params, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        List<Map<String, Object>> list = pageViewMapper.getList(viewName, params);
+        List<List<String>> results = new ArrayList<>();
+        PageViewContainer pageViewContainer = PageViewContainer.getInstance();
+        PageViewInfo pageViewInfo = pageViewContainer.get(viewName);
+        //不需要视图，直接使用表名称
+        List<IFunctionInfo> functionInfos = pageViewInfo.get(FunctionType.EXPORT);
+        if(CollectionUtils.isEmpty(functionInfos)){
+            throw new ExcelExportException("未查找到需要导出信息");
         }
-        return filename;
+        for (int i = 0; i < list.size(); i++) {
+            List<String> head = new LinkedList<>();
+            List<String> body = new LinkedList<>();
+            for (IFunctionInfo functionInfo : functionInfos) {
+                ExportInfo importInfo = (ExportInfo) functionInfo;
+                if (i == 0) {
+                    head.add(importInfo.getHeadName());
+                }
+                Object value = list.get(i).get(importInfo.getName());
+                body.add(SeageUtils.isEmpty(value) ? "" : value.toString());
+            }
+            if (i == 0) {
+                results.add(head);
+            }
+            results.add(body);
+        }
+        ExcelUtils excelUtils = new ExcelUtils();
+        excelUtils.makeExcelAndDownload(pageViewInfo.getViewName(), results, request, response);
     }
 
-    @Autowired
-    private Validator validator;
 
     /**
      * 参数验证
