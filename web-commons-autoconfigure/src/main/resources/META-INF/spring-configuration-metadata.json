@@ -83,5 +83,31 @@
       "name": "login.authc",
       "type": "java.lang.String[]",
       "description": "指定需要登录验证的接口，谨慎使用，如果指定该属性，那么除了该指定的接口之外，其他接口都不需要验证"
+    },{
+      "sourceType": "com.seagetech.web.commons.login.LoginProperties",
+      "name": "login.login-url",
+      "type": "java.lang.String",
+      "description": "未登录或者登录超时时跳转的接口（一般为登录页面）",
+      "defaultValue": "/login/notLogin"
+    },{
+      "sourceType": "com.seagetech.web.commons.login.LoginProperties",
+      "name": "login.success-page",
+      "type": "java.lang.String",
+      "description": "登录成功后跳转的页面"
+    },{
+      "sourceType": "com.seagetech.web.commons.login.LoginProperties",
+      "name": "login.success-url",
+      "type": "java.lang.String",
+      "description": "成功后请求的路径"
+    },{
+      "sourceType": "com.seagetech.web.commons.login.LoginProperties",
+      "name": "login.login-logo",
+      "type": "java.lang.String",
+      "description": "登录页logo"
+    },{
+      "sourceType": "com.seagetech.web.commons.login.LoginProperties",
+      "name": "login.login-page",
+      "type": "java.lang.String",
+      "description": "登录页面"
     }]
 }

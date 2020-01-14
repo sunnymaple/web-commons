@@ -67,16 +67,17 @@ public class ShiroUtils {
      * 用户登录
      * @param userName 用户名
      * @param password 密码
+     * @param rememberMe 记住我
      * @throws Exception
      */
-    public static void login(String userName,String password){
+    public static void login(String userName,String password,boolean rememberMe){
         //获取当前登录对象
         Subject currentUser = SecurityUtils.getSubject();
         //判断是否认证（登录）
-
         if (!currentUser.isAuthenticated()) {
             // 把用户名和密码封装为 UsernamePasswordToken 对象
             UsernamePasswordToken token = new UsernamePasswordToken(userName, password);
+            token.setRememberMe(rememberMe);
             //执行登录
             currentUser.login(token);
         }

@@ -13,6 +13,10 @@ public class DefaultViewName {
      */
     public static final String USER = "user";
     /**
+     * 用户角色关联关系表
+     */
+    public static final String USER_ROLE = "user_role";
+    /**
      * 角色
      */
     public static final String ROLE = "role";

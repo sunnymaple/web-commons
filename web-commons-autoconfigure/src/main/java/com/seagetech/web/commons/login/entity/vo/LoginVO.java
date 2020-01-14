@@ -26,4 +26,8 @@ public class LoginVO {
      */
     @NotBlank(message = "密码不能为空！")
     private String password;
+    /**
+     * 记住我
+     */
+    private Integer rememberMe;
 }

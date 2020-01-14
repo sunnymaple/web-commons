@@ -155,7 +155,7 @@ public class LoginAutoConfiguration implements ApplicationContextAware {
         //3、需要身份认证的接口
         authc(filterChainDefinitionMap);
         //4、如果不设置默认会自动寻找Web工程根目录下的"/login.jsp"页面
-        shiroFilterFactoryBean.setLoginUrl("/login/notLogin");
+        shiroFilterFactoryBean.setLoginUrl(loginProperties.getLoginUrl());
         //5、没有权限跳转的页面
         shiroFilterFactoryBean.setUnauthorizedUrl("");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);

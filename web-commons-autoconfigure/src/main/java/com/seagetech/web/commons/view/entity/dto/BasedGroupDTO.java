@@ -14,37 +14,37 @@ import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 
 /**
- * 角色
+ * 机构
  * @author wangzb
- * @date 2020/1/10 15:01
+ * @date 2020/1/13 16:45
  * @company 矽甲（上海）信息科技有限公司
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@PageView(value = DefaultViewName.ROLE,table = "tb_based_role", view = "vi_based_role",tableId = "role_id")
-public class BasedRoleDTO implements Serializable {
+@PageView(value = DefaultViewName.GROUP,table = "tb_based_group", view = "vi_based_group",tableId = "group_id")
+public class BasedGroupDTO implements Serializable {
     /**
      * 角色ID
      */
     @Query
     @PrimaryKey
-    private Integer roleId;
+    private Integer groupId;
     /**
      * 角色名称
      */
-    @Query(label = "角色名称",condition = Condition.LIKE)
-    @NotBlank(message = "角色名称不能为空！")
-    @Add(label = "角色名称")
-    private String roleName;
+    @Query(label = "机构名称",condition = Condition.LIKE)
+    @NotBlank(message = "机构名称不能为空！")
+    @Add(label = "机构名称")
+    private String groupName;
     /**
      * 上级角色
      */
-    @Query(label = "上级角色")
-    @Add(label = "上级角色",defaultValue = "0")
-    private Integer pRoleId;
+    @Query(label = "上级机构")
+    @Add(label = "上级机构",defaultValue = "0")
+    private Integer pGroupId;
     /**
      * 上级角色名称
      */
-    private String pRoleName;
+    private String pGroupName;
 }

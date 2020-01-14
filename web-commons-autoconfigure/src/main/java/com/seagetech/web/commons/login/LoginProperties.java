@@ -66,6 +66,30 @@ public class LoginProperties implements ApplicationContextAware {
      */
     private Class loginUserClass = DefaultLoginUser.class;
 
+    /**
+     * 登录成功后跳转的页面
+     */
+    private String successPage;
+    /**
+     * 成功后请求路径
+     */
+    private String successUrl;
+    /**
+     * 登录页面
+     */
+    private String loginPage;
+
+    /**
+     * 登录页接口
+     * 默认是/login/notLogin
+     */
+    private String loginUrl = "/login/view";
+
+    /**
+     * 登录页logo
+     */
+    private String loginLogo;
+
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         loginProperties = applicationContext.getBean(LoginProperties.class);
