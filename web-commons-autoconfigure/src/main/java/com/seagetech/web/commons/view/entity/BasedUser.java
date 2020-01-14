@@ -11,7 +11,7 @@ import java.io.Serializable;
 
 /**
  * <p>
- *  用户
+ *
  * </p>
  *
  * @author wangzb
@@ -80,4 +80,6 @@ public class BasedUser implements Serializable {
      * 创建时间
      */
     private String createTime;
+
+
 }

@@ -20,26 +20,26 @@ import java.io.Serializable;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@TableName("tb_based_role")
-public class BasedRole implements Serializable {
+@TableName("tb_based_user_role")
+public class BasedUserRole implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     /**
-     * 注解ID
+     * 用户角色关联表主键ID
      */
-    @TableId(value = "role_id", type = IdType.AUTO)
+    @TableId(value = "user_role_id", type = IdType.AUTO)
+    private Integer userRoleId;
+
+    /**
+     * 用户ID
+     */
+    private Integer userId;
+
+    /**
+     * 角色ID
+     */
     private Integer roleId;
-
-    /**
-     * 角色名称
-     */
-    private String roleName;
-
-    /**
-     * 上级角色ID，用于角色区分等级，最上层为0，不使用角色分级都可以使用0
-     */
-    private Integer pRoleId;
 
 
 }

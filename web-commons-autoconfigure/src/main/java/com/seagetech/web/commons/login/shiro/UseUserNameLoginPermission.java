@@ -9,11 +9,15 @@ import com.seagetech.web.commons.login.LoginProperties;
 import com.seagetech.web.commons.login.exception.LoginException;
 import com.seagetech.web.commons.login.exception.UseLoginUserNameNotFindException;
 import com.seagetech.web.commons.view.DefaultViewName;
+import com.seagetech.web.commons.view.entity.BasedPermission;
 import com.seagetech.web.commons.view.exception.UserEntityNotFindPasswordFieldException;
 import com.seagetech.web.commons.view.load.*;
-import com.seagetech.web.commons.view.service.PageViewService;
+import com.seagetech.web.commons.view.service.*;
+import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * 默认的登录认证
@@ -28,9 +32,27 @@ public class UseUserNameLoginPermission implements IPermission {
      */
     private PageViewService pageViewService;
 
+    @Autowired
+    private HttpServletRequest request;
+
+    @Autowired
+    private IBasedUserRoleService basedUserRoleService;
+
+    @Autowired
+    private IBasedRolePermissionService basedRolePermissionService;
+
+    @Autowired
+    private IBasedPermissionService basedPermissionService;
+
+    public UseUserNameLoginPermission() {
+    }
+
     public UseUserNameLoginPermission(PageViewService pageViewService) {
         this.pageViewService = pageViewService;
     }
+
+    private static final String VIEW_START = "/view";
+    private static final String VIEW_PERMISSION = "view";
 
     /**
      * 获取权限
@@ -40,7 +62,25 @@ public class UseUserNameLoginPermission implements IPermission {
      */
     @Override
     public Set<String> getPermissions(String userName) {
-        return null;
+        //获取用户角色
+        List<Integer> roles = basedUserRoleService.getUserRoles(Integer.parseInt(userName));
+        //通过角色再获取权限
+        List<Integer> permissionsIds = basedRolePermissionService.getPermissionsByRoles(roles);
+        //获取权限
+        Collection<BasedPermission> basedPermissions = basedPermissionService.listByIds(permissionsIds);
+        String servletPath = request.getServletPath();
+        if (servletPath.startsWith(VIEW_START)){
+            for (BasedPermission basedPermission:basedPermissions){
+                if (Objects.equals(basedPermission.getPermissionAlias(),servletPath)){
+                    return Arrays.stream(new String[]{VIEW_PERMISSION})
+                            .collect(Collectors.toSet());
+                }
+            }
+        }
+        return basedPermissions
+                .stream()
+                .map(BasedPermission::getPermissionAlias)
+                .collect(Collectors.toSet());
     }
 
     /**

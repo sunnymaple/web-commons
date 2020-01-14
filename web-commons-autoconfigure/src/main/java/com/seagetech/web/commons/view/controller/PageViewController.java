@@ -1,12 +1,15 @@
 package com.seagetech.web.commons.view.controller;
 
+import com.github.pagehelper.PageInfo;
 import com.seagetech.web.bind.PageHandlerType;
 import com.seagetech.web.bind.annotation.PageHandler;
 import com.seagetech.web.commons.util.Utils;
 import com.seagetech.web.commons.view.load.PageViewContainer;
 import com.seagetech.web.commons.view.load.PageViewInfo;
 import com.seagetech.web.commons.view.service.PageViewService;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -47,9 +50,14 @@ public class PageViewController {
      * @return
      */
     @GetMapping("/{viewName}")
-    public ModelAndView view(@PathVariable(value = "viewName") String viewName){
+    @RequiresPermissions("view")
+    @PageHandler
+    public ModelAndView view(@PathVariable(value = "viewName") String viewName, ModelMap modelMap){
         PageViewContainer pageViewContainer = PageViewContainer.getInstance();
         PageViewInfo pageViewInfo = pageViewContainer.get(viewName);
+        List<Map<String, Object>> listByPage = pageViewService.getListByPage(viewName, Utils.getParameter(request));
+        PageInfo pageInfo = new PageInfo(listByPage);
+        modelMap.put("datas",pageInfo);
         return new ModelAndView(Optional.ofNullable(pageViewInfo.getViewPath()).orElse(viewName));
     }
 
@@ -60,6 +68,7 @@ public class PageViewController {
      */
     @GetMapping("/getListByPage/{viewName}")
     @PageHandler(pageHandlerType = PageHandlerType.NOT_PAGE)
+    @RequiresPermissions("view")
     public List<Map<String,Object>> getListByPage(@PathVariable(value = "viewName") String viewName){
         return pageViewService.getListByPage(viewName, Utils.getParameter(request));
     }
@@ -71,6 +80,7 @@ public class PageViewController {
      */
     @RequestMapping(value = "/add/{viewName}",produces = "application/json")
     @ParamValidated
+    @RequiresPermissions("view")
     public String add(@PathVariable(value = "viewName") String viewName) {
         pageViewService.add(viewName,Utils.getParameter(request));
         return "添加成功!";
@@ -83,6 +93,7 @@ public class PageViewController {
      */
     @RequestMapping(value = "/update/{viewName}",produces = "application/json")
     @ParamValidated
+    @RequiresPermissions("view")
     public String update(@PathVariable(value = "viewName") String viewName) {
         pageViewService.update(viewName,Utils.getParameter(request));
         return "修改成功!";
@@ -94,8 +105,9 @@ public class PageViewController {
      * @param viewName
      * @param deleteId
      */
-    @GetMapping("/deleteById/{viewName}/{deleteId}")
-    public void deleteById(@PathVariable(value = "viewName") String viewName,@PathVariable(value = "deleteId") Integer deleteId){
+    @GetMapping("/delete/{viewName}")
+    @RequiresPermissions("view")
+    public void deleteById(@PathVariable(value = "viewName") String viewName, Integer deleteId){
         pageViewService.deleteById(viewName, deleteId);
     }
 
@@ -104,7 +116,8 @@ public class PageViewController {
      * @param viewName 视图名称
      * @param dataPic 导入文件文件
      */
-    @PostMapping("/importTable/{viewName}")
+    @PostMapping("/import/{viewName}")
+    @RequiresPermissions("view")
     public String importTable(@PathVariable(value = "viewName") String viewName, MultipartFile dataPic) throws Exception {
         pageViewService.importTable(viewName,dataPic,request);
         return "导入成功";
@@ -121,6 +134,7 @@ public class PageViewController {
     }
 
     @GetMapping("/exportExcel/{viewName}")
+    @RequiresPermissions("view")
     public void exportExcel(@PathVariable(value = "viewName") String viewName) throws Exception{
         pageViewService.exportExcel(viewName, Utils.getParameter(request),request,response);
     }

@@ -1,13 +1,19 @@
 package com.seagetech.web.commons.login.shiro;
 
+import com.seagetech.common.util.SeageUtils;
+import com.seagetech.web.commons.login.session.ISessionHandler;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
+import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * 用户登录以及权限控制
@@ -19,6 +25,9 @@ import java.util.List;
 public class LoginAuthorizingRealm extends AuthorizingRealm {
 
     private List<IPermission> permissions;
+
+    @Autowired
+    private ISessionHandler sessionHandler;
 
     public LoginAuthorizingRealm(List<IPermission> permissions) {
         this.permissions = permissions;
@@ -34,7 +43,16 @@ public class LoginAuthorizingRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
-        return null;
+        //登录用户信息
+        Object userName = sessionHandler.getUserName();
+        Set<String> results = new HashSet<>(SeageUtils.initialCapacity());
+        for (IPermission permission : permissions){
+            Set<String> setPermissions = permission.getPermissions(userName.toString());
+            results.addAll(setPermissions);
+        }
+        SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
+        info.setStringPermissions(results);
+        return info;
     }
 
     /**

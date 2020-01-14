@@ -20,26 +20,41 @@ import java.io.Serializable;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@TableName("tb_based_role")
-public class BasedRole implements Serializable {
+@TableName("tb_based_dictionary")
+public class BasedDictionary implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     /**
-     * 注解ID
+     * 字典表注解ID
      */
-    @TableId(value = "role_id", type = IdType.AUTO)
-    private Integer roleId;
+    @TableId(value = "dictionary_id", type = IdType.AUTO)
+    private Integer dictionaryId;
 
     /**
-     * 角色名称
+     * 字典key
      */
-    private String roleName;
+    private String dicKey;
 
     /**
-     * 上级角色ID，用于角色区分等级，最上层为0，不使用角色分级都可以使用0
+     * 字典ID
      */
-    private Integer pRoleId;
+    private String dicId;
+
+    /**
+     * 字典名称
+     */
+    private String dicName;
+
+    /**
+     * 字典排序，对相同字典key字段的排序
+     */
+    private Integer dicOrder;
+
+    /**
+     * 描述
+     */
+    private String detail;
 
 
 }

@@ -23,7 +23,7 @@ import java.io.Serializable;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@PageView(value = DefaultViewName.USER,table = "tb_based_user", view = "vi_based_user",tableId = "user_id")
+@PageView(value = DefaultViewName.USER,table = "tb_based_user", view = "vi_based_user",tableId = "user_id",viewPath = "system/user")
 public class BasedUserDTO implements Serializable {
 
     private static final long serialVersionUID = 1L;

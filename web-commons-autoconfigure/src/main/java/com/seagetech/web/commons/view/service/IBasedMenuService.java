@@ -1,7 +1,7 @@
 package com.seagetech.web.commons.view.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.seagetech.web.commons.view.entity.BasedUser;
+import com.seagetech.web.commons.view.entity.BasedMenu;
 
 /**
  * <p>
@@ -9,8 +9,8 @@ import com.seagetech.web.commons.view.entity.BasedUser;
  * </p>
  *
  * @author wangzb
- * @since 2020-01-13
+ * @since 2020-01-14
  */
-public interface IBasedUserService extends IService<BasedUser> {
+public interface IBasedMenuService extends IService<BasedMenu> {
 
 }
