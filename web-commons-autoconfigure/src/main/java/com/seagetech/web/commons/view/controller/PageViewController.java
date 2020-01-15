@@ -60,7 +60,7 @@ public class PageViewController {
         modelMap.put("datas",pageInfo);
         Map<String, Object> parameter = Utils.getParameter(request);
         for (Map.Entry<String, Object> stringObjectEntry : parameter.entrySet()) {
-            modelMap.put(stringObjectEntry.getKey(),stringObjectEntry.getValue());
+            modelMap.put(stringObjectEntry.getKey(), stringObjectEntry.getValue());
         }
         return new ModelAndView(Optional.ofNullable(pageViewInfo.getViewPath()).orElse(viewName));
     }
