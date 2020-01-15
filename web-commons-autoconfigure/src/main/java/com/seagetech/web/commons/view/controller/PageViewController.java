@@ -58,6 +58,10 @@ public class PageViewController {
         List<Map<String, Object>> listByPage = pageViewService.getListByPage(viewName, Utils.getParameter(request));
         PageInfo pageInfo = new PageInfo(listByPage);
         modelMap.put("datas",pageInfo);
+        Map<String, Object> parameter = Utils.getParameter(request);
+        for (Map.Entry<String, Object> stringObjectEntry : parameter.entrySet()) {
+            modelMap.put(stringObjectEntry.getKey(),stringObjectEntry.getValue());
+        }
         return new ModelAndView(Optional.ofNullable(pageViewInfo.getViewPath()).orElse(viewName));
     }
 
