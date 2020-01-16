@@ -165,14 +165,15 @@ public class PageViewServiceImpl implements PageViewService, ApplicationContextA
     }
 
     /**
-     * 根据主键删除
-     *
+     * 根据主键删除数据
      * @param viewName 视图名称
-     * @param deleteId 删除主键ID
+     * @param id 删除主键ID
+     * @param status 如果是逻辑删除需要传递值
+     *              如启用、禁用、删除，通过状态去控制
      */
     @Override
-    public void deleteById(String viewName, Integer deleteId) {
-        pageViewMapper.deleteById(viewName, deleteId);
+    public void deleteById(String viewName, String id,String status) {
+        pageViewMapper.deleteById(viewName, id,status);
     }
 
     /**

@@ -40,9 +40,11 @@ public interface PageViewService {
     /**
      * 根据主键删除数据
      * @param viewName 视图名称
-     * @param deleteId 删除主键ID
+     * @param id 删除主键ID
+     * @param status 如果是逻辑删除需要传递值
+     *              如启用、禁用、删除，通过状态去控制
      */
-    void deleteById(String viewName, Integer deleteId);
+    void deleteById(String viewName, String id,String status);
 
     /**
      * 导入文件

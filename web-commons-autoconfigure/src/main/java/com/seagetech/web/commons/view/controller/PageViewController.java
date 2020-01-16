@@ -1,6 +1,7 @@
 package com.seagetech.web.commons.view.controller;
 
 import com.github.pagehelper.PageInfo;
+import com.seagetech.common.util.SeageUtils;
 import com.seagetech.web.bind.PageHandlerType;
 import com.seagetech.web.bind.annotation.PageHandler;
 import com.seagetech.web.commons.util.Utils;
@@ -21,6 +22,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.constraints.NotBlank;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -55,10 +57,8 @@ public class PageViewController {
     public ModelAndView view(@PathVariable(value = "viewName") String viewName, ModelMap modelMap){
         PageViewContainer pageViewContainer = PageViewContainer.getInstance();
         PageViewInfo pageViewInfo = pageViewContainer.get(viewName);
-        List<Map<String, Object>> listByPage = pageViewService.getListByPage(viewName, Utils.getParameter(request));
-        PageInfo pageInfo = new PageInfo(listByPage);
-        modelMap.put("datas",pageInfo);
-        return new ModelAndView(Optional.ofNullable(pageViewInfo.getViewPath()).orElse(viewName));
+        String viewPath = SeageUtils.isEmpty(pageViewInfo.getViewPath()) ? viewName : pageViewInfo.getViewPath();
+        return new ModelAndView(viewPath);
     }
 
     /**
@@ -103,12 +103,13 @@ public class PageViewController {
     /**
      * 删除操作
      * @param viewName
-     * @param deleteId
+     * @param id 主键ID值
      */
     @GetMapping("/delete/{viewName}")
     @RequiresPermissions("view")
-    public void deleteById(@PathVariable(value = "viewName") String viewName, Integer deleteId){
-        pageViewService.deleteById(viewName, deleteId);
+    public void deleteById(@PathVariable(value = "viewName") String viewName,
+                           @NotBlank(message = "主键值不能为空！") String id, String status){
+        pageViewService.deleteById(viewName, id,status);
     }
 
     /**

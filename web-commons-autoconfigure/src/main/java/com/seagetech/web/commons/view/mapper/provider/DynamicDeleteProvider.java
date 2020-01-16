@@ -9,6 +9,7 @@ import com.seagetech.web.commons.view.load.IFunctionInfo;
 import com.seagetech.web.commons.view.load.PageViewContainer;
 import com.seagetech.web.commons.view.load.PageViewInfo;
 import com.seagetech.web.commons.view.load.exception.PageViewException;
+import com.seagetech.web.exception.ParamVerifyException;
 import lombok.var;
 import org.apache.commons.collections.CollectionUtils;
 
@@ -24,52 +25,43 @@ public class DynamicDeleteProvider {
     private static final String DELETE_SQL_PRE = "DELETE FROM ";
     private static final String UPDATE_SQL_PRE = "UPDATE ";
 
-    public String deleteById(String viewName,Integer deleteId){
+    public String deleteById(String viewName, String id,String status){
         StringBuilder sql = new StringBuilder();
         PageViewContainer pageViewContainer = PageViewContainer.getInstance();
         PageViewInfo pageViewInfo = pageViewContainer.get(viewName);
         //不需要视图，直接使用表名称
         String tableName = pageViewInfo.getTable();
-        if(SeageUtils.isEmpty(deleteId)){
-            throw new PageViewException("删除记录主键不能为空");
-        }
-        List<IFunctionInfo> functionInfos = pageViewInfo.get(FunctionType.DELETE);
-        //暂时仅支持根据主键删除，即删除的字段只能是主键，有且仅有一个
-        if (CollectionUtils.isEmpty(functionInfos)){
-            throw new PageViewException("实体类未标注删除主键");
-        }
+        List<IFunctionInfo> functionInfos = pageViewInfo.getThrow(FunctionType.DELETE);
         var iFunctionInfo = functionInfos.get(0);
         DeleteInfo deleteInfo = (DeleteInfo) iFunctionInfo;
         //拼接sql
         //删除
         if(deleteInfo.getDeleteType().equals(DeleteConstants.DELETE_TYPE_DELETE)){
-            if(SeageUtils.isEmpty(deleteInfo.getColumnName())){
-                throw new PageViewException("主键名称不能为空");
-            }
             sql.append(DELETE_SQL_PRE)
                     .append(tableName)
                     .append(" WHERE ")
                     .append(deleteInfo.getColumnName())
                     .append(Condition.EQ.getCondition())
-                    .append(deleteId);
+                    .append(" '").append(id).append("' ");
         }else if(deleteInfo.getDeleteType().equals(DeleteConstants.DELETE_TYPE_UPDATE)){
             //修改
-            if(SeageUtils.isEmpty(deleteInfo.getColumnName())){
-                throw new PageViewException("主键名称不能为空");
-            }
-            if(SeageUtils.isEmpty(deleteInfo.getStatusName())){
-                throw new PageViewException("修改状态名称不能为空");
+            if (SeageUtils.isEmpty(status)){
+                throw new ParamVerifyException("修改内容值不能为空！");
             }
             sql.append(UPDATE_SQL_PRE)
                     .append(tableName)
                     .append(" SET ")
                     .append(deleteInfo.getStatusName())
                     .append(Condition.EQ.getCondition())
-                    .append(DeleteConstants.DELETE_STATUS_DELETE)
+                    .append(" '")
+                    .append(status)
+                    .append("' ")
                     .append(" WHERE ")
                     .append(deleteInfo.getColumnName())
                     .append(Condition.EQ.getCondition())
-                    .append(deleteId);
+                    .append(" '")
+                    .append(id)
+                    .append("' ");
         }else {
             throw new PageViewException("删除类型输入错误");
         }
