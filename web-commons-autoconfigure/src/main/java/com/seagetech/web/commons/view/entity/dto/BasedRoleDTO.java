@@ -1,10 +1,7 @@
 package com.seagetech.web.commons.view.entity.dto;
 
 import com.seagetech.web.commons.bind.Condition;
-import com.seagetech.web.commons.bind.annotation.Add;
-import com.seagetech.web.commons.bind.annotation.PageView;
-import com.seagetech.web.commons.bind.annotation.PrimaryKey;
-import com.seagetech.web.commons.bind.annotation.Query;
+import com.seagetech.web.commons.bind.annotation.*;
 import com.seagetech.web.commons.view.DefaultViewName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -22,11 +19,12 @@ import java.io.Serializable;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@PageView(value = DefaultViewName.ROLE,table = "tb_based_role", view = "vi_based_role",tableId = "role_id")
+@PageView(value = DefaultViewName.ROLE,table = "tb_based_role", view = "vi_based_role",tableId = "role_id",viewPath = "system/role")
 public class BasedRoleDTO implements Serializable {
     /**
      * 角色ID
      */
+    @Delete(columnName = "role_id",deleteType = 0)
     @Query
     @PrimaryKey
     private Integer roleId;

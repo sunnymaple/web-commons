@@ -57,6 +57,10 @@ public class PageViewController {
         PageViewContainer pageViewContainer = PageViewContainer.getInstance();
         PageViewInfo pageViewInfo = pageViewContainer.get(viewName);
         String viewPath = SeageUtils.isEmpty(pageViewInfo.getViewPath()) ? viewName : pageViewInfo.getViewPath();
+        Map<String, Object> parameter = Utils.getParameter(request);
+        for (Map.Entry<String, Object> stringObjectEntry : parameter.entrySet()) {
+            modelMap.put(stringObjectEntry.getKey(), stringObjectEntry.getValue());
+        }
         return new ModelAndView(viewPath);
     }
 
@@ -106,9 +110,10 @@ public class PageViewController {
      */
     @GetMapping("/delete/{viewName}")
     @RequiresPermissions("view")
-    public void deleteById(@PathVariable(value = "viewName") String viewName,
+    public String deleteById(@PathVariable(value = "viewName") String viewName,
                            @NotBlank(message = "主键值不能为空！") String id, String status){
         pageViewService.deleteById(viewName, id,status);
+        return "删除成功！";
     }
 
     /**
