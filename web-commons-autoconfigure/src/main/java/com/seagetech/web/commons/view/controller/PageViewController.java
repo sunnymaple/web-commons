@@ -1,6 +1,5 @@
 package com.seagetech.web.commons.view.controller;
 
-import com.github.pagehelper.PageInfo;
 import com.seagetech.common.util.SeageUtils;
 import com.seagetech.web.bind.PageHandlerType;
 import com.seagetech.web.bind.annotation.PageHandler;
@@ -57,10 +56,8 @@ public class PageViewController {
         PageViewContainer pageViewContainer = PageViewContainer.getInstance();
         PageViewInfo pageViewInfo = pageViewContainer.get(viewName);
         String viewPath = SeageUtils.isEmpty(pageViewInfo.getViewPath()) ? viewName : pageViewInfo.getViewPath();
-        Map<String, Object> parameter = Utils.getParameter(request);
-        for (Map.Entry<String, Object> stringObjectEntry : parameter.entrySet()) {
-            modelMap.put(stringObjectEntry.getKey(), stringObjectEntry.getValue());
-        }
+        modelMap.put("viewName",viewName);
+        modelMap.put("primaryKey",pageViewInfo.getPrimaryKey().getName());
         return new ModelAndView(viewPath);
     }
 
@@ -112,7 +109,8 @@ public class PageViewController {
     @RequiresPermissions("view")
     public String deleteById(@PathVariable(value = "viewName") String viewName,
                            @NotBlank(message = "主键值不能为空！") String id, String status){
-        pageViewService.deleteById(viewName, id,status);
+        String[] idArr = id.split(",");
+        pageViewService.deleteById(viewName, idArr,status);
         return "删除成功！";
     }
 

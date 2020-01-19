@@ -42,11 +42,11 @@ public interface PageViewMapper {
     /**
      * 根据主键删除
      * @param viewName 视图名称
-     * @param id 删除主键ID
+     * @param ids 删除主键ID
      * @param status
      */
     @DeleteProvider(type = DynamicDeleteProvider.class,method = "deleteById")
-    void deleteById(String viewName, String id,String status);
+    void deleteById(String viewName, String[] ids,String status);
 
     /**
      * 导入文件插入数据库

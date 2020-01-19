@@ -3,6 +3,7 @@ package com.seagetech.web.commons.view.mapper.provider;
 import com.seagetech.common.util.SeageUtils;
 import com.seagetech.web.commons.bind.Condition;
 import com.seagetech.web.commons.bind.FunctionType;
+import com.seagetech.web.commons.bind.SortType;
 import com.seagetech.web.commons.view.load.IFunctionInfo;
 import com.seagetech.web.commons.view.load.PageViewContainer;
 import com.seagetech.web.commons.view.load.PageViewInfo;
@@ -28,9 +29,15 @@ public class DynamicSelectProvider {
      */
     private static final String SELECT_SQL_WHERE_PREFIX = " WHERE 1=1 ";
     /**
+     * 查询语句 排序
+     */
+    private static final String SELECT_SQL_ORDER_BY_PREFIX = " ORDER BY ";
+    /**
      * and 连接符
      */
     private static final String AND = " AND ";
+    private static final String IN = " IN ";
+    private static final String NOT_IN = " NOT IN ";
 
     /**
      * 创建动态sql查询语句
@@ -42,6 +49,8 @@ public class DynamicSelectProvider {
         //sql
         StringBuilder sql = new StringBuilder(SELECT_SQL_PREFIX);
 
+        //order by
+        StringBuilder orderBySql = new StringBuilder();
         PageViewContainer pageViewContainer = PageViewContainer.getInstance();
         PageViewInfo pageViewInfo = pageViewContainer.get(viewName);
         //表
@@ -57,6 +66,7 @@ public class DynamicSelectProvider {
                     QueryInfo queryInfo = (QueryInfo) iInfo;
                     String name = queryInfo.getName();
                     Object value = params.get(name);
+                    String columnName = queryInfo.getColumnName();
                     if (!SeageUtils.isEmpty(value)){
                         sql.append(AND)
                                 .append(queryInfo.getColumnName())
@@ -65,11 +75,49 @@ public class DynamicSelectProvider {
                                 .append(" '")
                                 .append(getValue(queryInfo.getCondition(),value))
                                 .append("' ");
+                    }else {
+                        //固定条件
+                        String[] queryOnlys = queryInfo.getQueryOnly();
+                        appendRigidCondition(sql,queryOnlys,columnName,IN);
+                        String[] notQuerys = queryInfo.getNotQuery();
+                        appendRigidCondition(sql,notQuerys,columnName,NOT_IN);
+                    }
+                    //sort
+                    SortType sortType = queryInfo.getSortType();
+                    if (sortType!=SortType.NONE){
+                        if (!SeageUtils.isEmpty(orderBySql.toString())){
+                            orderBySql.append(",");
+                        }
+                        orderBySql.append(columnName).append(" ").append(sortType.getSort());
                     }
                 })
             );
         }
+        if (!SeageUtils.isEmpty(orderBySql.toString())){
+            sql.append(SELECT_SQL_ORDER_BY_PREFIX).append(orderBySql);
+        }
         return sql.toString();
+    }
+
+    /**
+     * 拼接固定条件
+     * @param sql
+     * @param rigidConditions
+     * @param columnName
+     * @param condition
+     */
+    private void appendRigidCondition(StringBuilder sql,String[] rigidConditions,String columnName,String condition){
+        if (!SeageUtils.isEmpty(rigidConditions)){
+            sql.append(AND).append(columnName).append(" ").append(condition).append("(");
+            for (int i=0;i<rigidConditions.length;i++){
+                String queryOnly = rigidConditions[i];
+                if (i!=0){
+                    sql.append(",");
+                }
+                sql.append(" '").append(queryOnly).append("' ");
+            }
+            sql.append(")");
+        }
     }
 
     private String getValue(Condition condition,Object value){

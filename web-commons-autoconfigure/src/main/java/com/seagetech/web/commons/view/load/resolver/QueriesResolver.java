@@ -31,7 +31,7 @@ public class QueriesResolver extends AbstractResolver<Queries, QueryInfo>{
             //列名称
             String columnName = SeageUtils.isEmpty(query.columnName()) ?
                     SeageUtils.upperUnderScore(fieldName) : query.columnName();
-            results.add(new QueryInfo(query.condition(),name,columnName));
+            results.add(new QueryInfo(query.condition(),name,columnName,query.label(),query.queryOnly(),query.notQuery(),query.sort()));
         }
         return results;
     }

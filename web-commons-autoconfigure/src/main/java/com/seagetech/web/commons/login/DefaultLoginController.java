@@ -114,4 +114,13 @@ public class DefaultLoginController {
     public String logout() {
         return "退出成功！";
     }
+
+    /**
+     * 退出登录
+     * @return
+     */
+    @RequestMapping(value = "/logout",produces = "text/html")
+    public String logoutHtml() {
+        return "redirect:/login/view";
+    }
 }

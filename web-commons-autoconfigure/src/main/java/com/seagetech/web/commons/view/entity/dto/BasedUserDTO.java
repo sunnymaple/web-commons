@@ -2,6 +2,7 @@ package com.seagetech.web.commons.view.entity.dto;
 
 import com.seagetech.web.bind.annotation.validated.Telephone;
 import com.seagetech.web.commons.bind.Condition;
+import com.seagetech.web.commons.bind.SortType;
 import com.seagetech.web.commons.bind.annotation.*;
 import com.seagetech.web.commons.view.DefaultViewName;
 import lombok.Data;
@@ -60,11 +61,11 @@ public class BasedUserDTO implements Serializable {
     /**
      * 状态，0：禁用或者删除 1：启用。处于0的账户不能登录
      */
-    @Query(label="状态")
+    @Query(label="状态",notQuery = "2")
     @Add(label="状态",defaultValue = "1")
     @UserStatus(value = "1",valid = true)
-    @UserStatus(value = "2",message = "用户已过期！")
-    @UserStatus(value = "0",message = "用户名或密码错误！")
+    @UserStatus(value = "0",message = "用户已过期！")
+    @UserStatus(value = "2",message = "用户名或密码错误！")
     private Integer status;
     /**
      * 状态名称
@@ -126,7 +127,7 @@ public class BasedUserDTO implements Serializable {
     /**
      * 创建时间
      */
-    @Query(condition= Condition.GT_EQ,name = "startTime", label="起始时间")
+    @Query(condition= Condition.GT_EQ,name = "startTime", label="起始时间",sort = SortType.DESC)
     @Query(condition= Condition.LT_EQ,name = "endTime", label="截止时间")
     @Add(defaultValue = "#date|yyyy-MM-dd HH:mm:ss")
     @Import(col = -1,defaultValue = "#date|yyyy-MM-dd HH:mm:ss")

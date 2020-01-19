@@ -2,6 +2,7 @@ package com.seagetech.web.commons.bind.annotation;
 
 import com.seagetech.web.commons.bind.Condition;
 import com.seagetech.web.commons.bind.FunctionType;
+import com.seagetech.web.commons.bind.SortType;
 import com.seagetech.web.commons.view.load.resolver.QueryResolver;
 
 import java.lang.annotation.*;
@@ -45,4 +46,23 @@ public @interface Query {
      */
     String label() default "";
 
+    /**
+     * 只查询的值
+     * 比如只查询出状态为1的，0表示被删除的不显示出来
+     * @return
+     */
+    String[] queryOnly() default {};
+
+    /**
+     * 不查询出的值
+     * @return
+     */
+    String[] notQuery() default {};
+
+    /**
+     * 排序
+     *
+     * @return
+     */
+    SortType sort() default SortType.NONE;
 }

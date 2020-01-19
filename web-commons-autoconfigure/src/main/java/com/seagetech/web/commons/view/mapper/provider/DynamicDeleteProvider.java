@@ -11,7 +11,6 @@ import com.seagetech.web.commons.view.load.PageViewInfo;
 import com.seagetech.web.commons.view.load.exception.PageViewException;
 import com.seagetech.web.exception.ParamVerifyException;
 import lombok.var;
-import org.apache.commons.collections.CollectionUtils;
 
 import java.util.List;
 
@@ -25,7 +24,7 @@ public class DynamicDeleteProvider {
     private static final String DELETE_SQL_PRE = "DELETE FROM ";
     private static final String UPDATE_SQL_PRE = "UPDATE ";
 
-    public String deleteById(String viewName, String id,String status){
+    public String deleteById(String viewName, String[] ids,String status){
         StringBuilder sql = new StringBuilder();
         PageViewContainer pageViewContainer = PageViewContainer.getInstance();
         PageViewInfo pageViewInfo = pageViewContainer.get(viewName);
@@ -38,11 +37,9 @@ public class DynamicDeleteProvider {
         //删除
         if(deleteInfo.getDeleteType().equals(DeleteConstants.DELETE_TYPE_DELETE)){
             sql.append(DELETE_SQL_PRE)
-                    .append(tableName)
-                    .append(" WHERE ")
-                    .append(deleteInfo.getColumnName())
-                    .append(Condition.EQ.getCondition())
-                    .append(" '").append(id).append("' ");
+                    .append(tableName);
+            appendIds(sql,ids,deleteInfo.getColumnName());
+
         }else if(deleteInfo.getDeleteType().equals(DeleteConstants.DELETE_TYPE_UPDATE)){
             //修改
             if (SeageUtils.isEmpty(status)){
@@ -55,16 +52,29 @@ public class DynamicDeleteProvider {
                     .append(Condition.EQ.getCondition())
                     .append(" '")
                     .append(status)
-                    .append("' ")
-                    .append(" WHERE ")
-                    .append(deleteInfo.getColumnName())
-                    .append(Condition.EQ.getCondition())
-                    .append(" '")
-                    .append(id)
                     .append("' ");
+            appendIds(sql,ids,deleteInfo.getColumnName());
         }else {
             throw new PageViewException("删除类型输入错误");
         }
         return sql.toString();
+    }
+
+    /**
+     * 拼接ids
+     * @param sql sql
+     * @param ids 主键ID值
+     * @param idColumnName id列名称
+     */
+    private void appendIds(StringBuilder sql,String[] ids,String idColumnName){
+        sql.append(" WHERE ").append(idColumnName).append(" IN (");
+        for (int i=0;i<ids.length;i++){
+            String id = ids[i];
+            if (i!=0){
+                sql.append(",");
+            }
+            sql.append(" '").append(id).append("' ");
+        }
+        sql.append(")");
     }
 }

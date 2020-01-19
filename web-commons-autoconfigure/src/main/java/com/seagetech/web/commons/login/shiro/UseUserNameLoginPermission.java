@@ -112,10 +112,14 @@ public class UseUserNameLoginPermission implements IPermission {
         for (IFunctionInfo useLoginUserName : useLoginUserNames){
             UseLoginUserNameInfo useLoginUserNameInfo = (UseLoginUserNameInfo) useLoginUserName;
             Map<String,Object> params = new HashMap<>(1);
-            params.put(useLoginUserNameInfo.getName(),userName);
+            String useLoginUserNameValue = useLoginUserNameInfo.getName();
+            params.put(useLoginUserNameValue,userName);
             List<Map<String, Object>> users = pageViewService.getListByPage(DefaultViewName.USER, params);
             if (!SeageUtils.isEmpty(users)){
                 for (Map<String, Object> user : users){
+                    if (!Objects.equals(user.get(useLoginUserNameValue),userName)){
+                        continue;
+                    }
                     //获取用户主键并且进行加密
                     String primaryKeyValue = user.get(primaryKeyInfo.getName()).toString();
                     String ciphertext = ShiroUtils.encryption(password,primaryKeyValue);

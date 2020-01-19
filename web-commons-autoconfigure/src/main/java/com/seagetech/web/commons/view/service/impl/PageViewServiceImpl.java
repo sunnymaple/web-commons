@@ -92,7 +92,7 @@ public class PageViewServiceImpl implements PageViewService, ApplicationContextA
         //判重
         distinct(pageViewInfo,params);
         //插入数据
-        pageViewMapper.insert(sessionHandler.getUser(), viewName, params);
+        pageViewMapper.insert(sessionHandler.getUserName(), viewName, params);
     }
 
     /**
@@ -161,19 +161,19 @@ public class PageViewServiceImpl implements PageViewService, ApplicationContextA
         //判重
         distinct(pageViewInfo,params,primaryKey);
         //
-        pageViewMapper.update(sessionHandler.getUser(), viewName, params);
+        pageViewMapper.update(sessionHandler.getUserName(), viewName, params);
     }
 
     /**
      * 根据主键删除数据
      * @param viewName 视图名称
-     * @param id 删除主键ID
+     * @param ids 删除主键ID
      * @param status 如果是逻辑删除需要传递值
      *              如启用、禁用、删除，通过状态去控制
      */
     @Override
-    public void deleteById(String viewName, String id,String status) {
-        pageViewMapper.deleteById(viewName, id,status);
+    public void deleteById(String viewName, String[] ids,String status) {
+        pageViewMapper.deleteById(viewName, ids,status);
     }
 
     /**
