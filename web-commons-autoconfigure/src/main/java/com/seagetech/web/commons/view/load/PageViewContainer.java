@@ -54,4 +54,14 @@ public class PageViewContainer extends HashMap<String,PageViewInfo> {
         }
         return pageViewInfo;
     }
+
+    /**
+     * 获取PageViewInfo
+     * @param key
+     * @return
+     */
+    public static PageViewInfo getPageViewInfo(Object key){
+        PageViewContainer pageViewContainer = getInstance();
+        return pageViewContainer.get(key);
+    }
 }

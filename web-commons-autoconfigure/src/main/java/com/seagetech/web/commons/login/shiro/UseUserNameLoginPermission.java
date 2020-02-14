@@ -114,7 +114,7 @@ public class UseUserNameLoginPermission implements IPermission {
             Map<String,Object> params = new HashMap<>(1);
             String useLoginUserNameValue = useLoginUserNameInfo.getName();
             params.put(useLoginUserNameValue,userName);
-            List<Map<String, Object>> users = pageViewService.getListByPage(DefaultViewName.USER, params);
+            List<Map<String, Object>> users = pageViewService.getList(DefaultViewName.USER, params);
             if (!SeageUtils.isEmpty(users)){
                 for (Map<String, Object> user : users){
                     if (!Objects.equals(user.get(useLoginUserNameValue),userName)){

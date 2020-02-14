@@ -2,9 +2,7 @@ package com.seagetech.web.commons.bind.annotation;
 
 import com.seagetech.web.commons.bind.FunctionType;
 import com.seagetech.web.commons.view.load.IOption;
-import com.seagetech.web.commons.view.load.resolver.DeleteResolver;
 import com.seagetech.web.commons.view.load.resolver.ImportResolver;
-import org.apache.ibatis.jdbc.Null;
 
 import java.io.Serializable;
 import java.lang.annotation.*;
@@ -52,5 +50,17 @@ public @interface Import {
      */
     String defaultValue() default "";
 
+    /**
+     * 选项
+     * 必须实现接口{@link IOption}
+     * @return
+     */
     Class<?> option() default Void.class;
+
+    /**
+     * 获取option选项的参数
+     * 形式:key:value
+     * @return
+     */
+    String[] optionParams() default {};
 }

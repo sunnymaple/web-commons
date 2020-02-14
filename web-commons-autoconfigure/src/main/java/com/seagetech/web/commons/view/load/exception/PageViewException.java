@@ -7,6 +7,10 @@ package com.seagetech.web.commons.view.load.exception;
  * @company 矽甲（上海）信息科技有限公司
  */
 public class PageViewException extends RuntimeException{
+    /**
+     * viewName 视图名称
+     */
+    private String viewName;
 
     public PageViewException() {
     }
@@ -25,5 +29,24 @@ public class PageViewException extends RuntimeException{
 
     public PageViewException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);
+    }
+
+    public PageViewException(String viewName,String message) {
+        super(viewName + ":" + message);
+        this.viewName = viewName;
+    }
+
+    public PageViewException(String viewName,String message, Throwable cause) {
+        super(viewName + ":" + message, cause);
+        this.viewName = viewName;
+    }
+
+    public PageViewException(String viewName,String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+        super(viewName + ":" + message, cause, enableSuppression, writableStackTrace);
+        this.viewName = viewName;
+    }
+
+    public String getViewName() {
+        return viewName;
     }
 }

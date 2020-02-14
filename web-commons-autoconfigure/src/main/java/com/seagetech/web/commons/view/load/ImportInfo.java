@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
+import java.util.Map;
 
 /** 导入注解信息
  * @author gdl
@@ -40,5 +41,9 @@ public class ImportInfo implements IFunctionInfo {
     /**
      * 导入内容是否有和字典表关联的内容
      */
-    private  Class<?> option;
+    private Class<? extends IOption> option;
+    /**
+     * 获取IOption的默认参数
+     */
+    private Map<String,Object> optionParams;
 }

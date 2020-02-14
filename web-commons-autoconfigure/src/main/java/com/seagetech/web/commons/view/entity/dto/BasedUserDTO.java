@@ -5,6 +5,7 @@ import com.seagetech.web.commons.bind.Condition;
 import com.seagetech.web.commons.bind.SortType;
 import com.seagetech.web.commons.bind.annotation.*;
 import com.seagetech.web.commons.view.DefaultViewName;
+import com.seagetech.web.commons.view.load.DefaultOption;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -24,7 +25,9 @@ import java.io.Serializable;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@PageView(value = DefaultViewName.USER,table = "tb_based_user", view = "vi_based_user",tableId = "user_id",viewPath = "system/user")
+@PageView(value = DefaultViewName.USER,table = "tb_based_user",
+        view = "vi_based_user",tableId = "user_id",
+        viewPath = "system/user",excelTemplatePath = "/static/template/user.xls")
 public class BasedUserDTO implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -66,6 +69,7 @@ public class BasedUserDTO implements Serializable {
     @UserStatus(value = "1",valid = true)
     @UserStatus(value = "0",message = "用户已过期！")
     @UserStatus(value = "2",message = "用户名或密码错误！")
+    @Import(defaultValue = "1")
     private Integer status;
     /**
      * 状态名称
@@ -78,7 +82,7 @@ public class BasedUserDTO implements Serializable {
     @Query(label="性别")
     @Add(label="性别")
     @NotNull(message = "性别不能为空！")
-    @Import(col = 3)
+    @Import(col = 3,option = DefaultOption.class,optionParams = "dicKey=gender")
     @Export(col = 3,headName = "性别")
     private String gender;
     /**

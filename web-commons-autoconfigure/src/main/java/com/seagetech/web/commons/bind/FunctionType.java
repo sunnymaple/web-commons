@@ -46,5 +46,9 @@ public enum FunctionType {
     /**
      * 用户状态标记
      */
-    USER_STATUS;
+    USER_STATUS,
+    /**
+     * 选项
+     */
+    OPTION;
 }

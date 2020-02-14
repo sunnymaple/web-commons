@@ -1,5 +1,8 @@
 package com.seagetech.web.commons.view.service;
 
+import com.seagetech.web.commons.view.load.Option;
+import org.springframework.core.io.AbstractResource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,7 +24,7 @@ public interface PageViewService {
      * @param params 查询条件
      * @return
      */
-    List<Map<String,Object>> getListByPage(String viewName, Map<String,Object> params);
+    List<Map<String,Object>> getList(String viewName, Map<String,Object> params);
 
     /**
      * 添加、新增
@@ -49,18 +52,17 @@ public interface PageViewService {
     /**
      * 导入文件
      * @param viewName 视图名称
-     * @param dataPic 文件
+     * @param multipartFile 文件
+     * @throws Exception
      */
-    void importTable(String viewName, MultipartFile dataPic,HttpServletRequest request) throws Exception;
+    void importTable(String viewName, MultipartFile multipartFile) throws Exception;
 
     /**
      * 模板下载
-     * @param filePath 文件保存地址
-     * @param excelName 文件名称
-     * @param request
-     * @param response
+     * @param viewName 视图名称
+     * @throws Exception
      */
-    void excelFormWork(String filePath, String excelName, HttpServletRequest request, HttpServletResponse response) throws Exception;
+    ResponseEntity<AbstractResource> getTemplate(String viewName) throws Exception;
 
     /**
      * 导出文件
@@ -68,6 +70,15 @@ public interface PageViewService {
      * @param parameter 参数
      * @param request
      * @param response
+     * @throws Exception
      */
     void exportExcel(String viewName, Map<String, Object> parameter, HttpServletRequest request, HttpServletResponse response) throws Exception;
+
+    /**
+     * 获取下拉选项
+     * @param viewName 视图名称
+     * @param params 请求参数
+     * @return
+     */
+    List<Option> getOptions(String viewName,Map<String,Object> params);
 }

@@ -4,11 +4,14 @@ import com.seagetech.common.util.SeageUtils;
 import com.seagetech.web.bind.PageHandlerType;
 import com.seagetech.web.bind.annotation.PageHandler;
 import com.seagetech.web.commons.util.Utils;
+import com.seagetech.web.commons.view.load.Option;
 import com.seagetech.web.commons.view.load.PageViewContainer;
 import com.seagetech.web.commons.view.load.PageViewInfo;
 import com.seagetech.web.commons.view.service.PageViewService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.AbstractResource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -70,7 +73,7 @@ public class PageViewController {
     @PageHandler(pageHandlerType = PageHandlerType.NOT_PAGE)
     @RequiresPermissions("view")
     public List<Map<String,Object>> getListByPage(@PathVariable(value = "viewName") String viewName){
-        return pageViewService.getListByPage(viewName, Utils.getParameter(request));
+        return pageViewService.getList(viewName, Utils.getParameter(request));
     }
 
     /**
@@ -117,28 +120,43 @@ public class PageViewController {
     /**
      * 文件导入
      * @param viewName 视图名称
-     * @param dataPic 导入文件文件
+     * @param multipartFile 导入文件文件
      */
     @PostMapping("/import/{viewName}")
     @RequiresPermissions("view")
-    public String importTable(@PathVariable(value = "viewName") String viewName, MultipartFile dataPic) throws Exception {
-        pageViewService.importTable(viewName,dataPic,request);
+    public String importTable(@PathVariable(value = "viewName") String viewName, @RequestParam("file") MultipartFile multipartFile) throws Exception {
+        pageViewService.importTable(viewName,multipartFile);
         return "导入成功";
     }
 
     /**
      * 模板下载
-     * @param filePath 文件所在文件夹名称
-     * @param excelName 模板名称
+     * @para
+     * m  viewName 视图名称
      */
-    @GetMapping("/excelFormWork/{filePath}/{excelName}")
-    public void excelFormWork(@PathVariable(value = "filePath") String filePath,@PathVariable(value = "excelName") String excelName)throws Exception{
-        pageViewService.excelFormWork(filePath,excelName,request,response);
+    @GetMapping("/template/{viewName}")
+    public ResponseEntity<AbstractResource> getTemplate(@PathVariable(value = "viewName") String viewName)throws Exception{
+        return pageViewService.getTemplate(viewName);
     }
 
-    @GetMapping("/exportExcel/{viewName}")
+    /**
+     * 导出
+     * @param viewName 视图名称
+     * @throws Exception
+     */
+    @GetMapping("/export/{viewName}")
     @RequiresPermissions("view")
     public void exportExcel(@PathVariable(value = "viewName") String viewName) throws Exception{
         pageViewService.exportExcel(viewName, Utils.getParameter(request),request,response);
+    }
+
+    /**
+     * 获取下拉选项
+     * @param viewName 视图名称
+     * @return
+     */
+    @GetMapping("/getSelectOptions/{viewName}")
+    public List<Option> getSelectOptions(@PathVariable(value = "viewName") String viewName){
+        return pageViewService.getOptions(viewName,Utils.getParameter(request));
     }
 }

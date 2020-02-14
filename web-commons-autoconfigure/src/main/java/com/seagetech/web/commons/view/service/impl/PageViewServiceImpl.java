@@ -4,8 +4,11 @@ import cn.afterturn.easypoi.exception.excel.ExcelExportException;
 import com.seagetech.common.util.SeageJson;
 import com.seagetech.common.util.SeageUtils;
 import com.seagetech.web.commons.bind.FunctionType;
+import com.seagetech.web.commons.bind.OptionType;
 import com.seagetech.web.commons.login.session.ISessionHandler;
+import com.seagetech.web.commons.util.Excel;
 import com.seagetech.web.commons.util.ExcelUtils;
+import com.seagetech.web.commons.view.exception.NoSuchTemplateException;
 import com.seagetech.web.commons.view.exception.UniqueException;
 import com.seagetech.web.commons.view.load.*;
 import com.seagetech.web.commons.view.load.exception.FileDownLoadException;
@@ -20,6 +23,8 @@ import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.core.io.AbstractResource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -27,10 +32,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
-import java.io.*;
+import java.io.InputStream;
 import java.text.DecimalFormat;
 import java.util.*;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 /**
  * 列表查询业务实现层
@@ -53,6 +59,8 @@ public class PageViewServiceImpl implements PageViewService, ApplicationContextA
 
     private ApplicationContext applicationContext;
 
+    @Autowired
+    private HttpServletRequest request;
 
     /**
      * 列表分页查询
@@ -62,7 +70,7 @@ public class PageViewServiceImpl implements PageViewService, ApplicationContextA
      * @return
      */
     @Override
-    public List<Map<String, Object>> getListByPage(String viewName, Map<String, Object> params) {
+    public List<Map<String, Object>> getList(String viewName, Map<String, Object> params) {
         PageViewContainer pageViewContainer = PageViewContainer.getInstance();
         PageViewInfo pageViewInfo = pageViewContainer.get(viewName);
         boolean enableCustomQuery = pageViewInfo.enableCustomFunction(FunctionType.QUERY);
@@ -120,7 +128,7 @@ public class PageViewServiceImpl implements PageViewService, ApplicationContextA
                 if (!SeageUtils.isEmpty(value)) {
                     Map<String, Object> queryParams = new HashMap<>(1);
                     queryParams.put(name, value);
-                    List<Map<String, Object>> results = getListByPage(pageViewInfo.getViewName(), queryParams);
+                    List<Map<String, Object>> results = getList(pageViewInfo.getViewName(), queryParams);
                     if (results != null && results.size() > 0) {
                         if (SeageUtils.isEmpty(primaryKey) || results.size()>1){
                             throw new UniqueException(value + "已存在!");
@@ -180,24 +188,13 @@ public class PageViewServiceImpl implements PageViewService, ApplicationContextA
      * 导入文件
      *
      * @param viewName 视图名称
-     * @param dataPic  文件
+     * @param multipartFile  文件
      */
     @Override
-    public void importTable(String viewName, MultipartFile dataPic, HttpServletRequest request) throws Exception {
-        String path = request.getSession().getServletContext().getRealPath("tempFile");
-        String fileName = dataPic.getOriginalFilename();
-        File file = new File(path);
-        if (!file.exists()) {
-            file.mkdirs();
-        }
-        File file1 = new File(path + File.separator + System.currentTimeMillis() + "_" + fileName);
-        if (file1.exists()) {
-            file1.delete();
-        }
-        dataPic.transferTo(file1);
-        FileInputStream stream = new FileInputStream(file1);
-        // 获取Ecle对象
-        Workbook workbook = WorkbookFactory.create(stream);
+    public void importTable(String viewName, MultipartFile multipartFile) throws Exception {
+        //文件验证
+        Excel.verifyThrow(multipartFile);
+        Workbook workbook = Excel.getWorkbook(multipartFile);
         //获取第一个sheet的数据
         Sheet sheet = workbook.getSheetAt(0);
         //获取容器，找到对应的实体类，获取相关信息
@@ -208,10 +205,7 @@ public class PageViewServiceImpl implements PageViewService, ApplicationContextA
         Integer firstRow = pageViewInfo.getRow();
         //不需要视图，直接使用表名称
         String tableName = pageViewInfo.getTable();
-        List<IFunctionInfo> functionInfos = pageViewInfo.get(FunctionType.IMPORT);
-        if(CollectionUtils.isEmpty(functionInfos)){
-            throw new ExcelExportException("未查找到需要导入信息");
-        }
+        List<IFunctionInfo> functionInfos = pageViewInfo.getThrow(FunctionType.IMPORT);
         List<Map<String, Object>> columns = new ArrayList<>();
         for (int j = firstRow; j <= sheet.getLastRowNum(); j++) {
             Row row = sheet.getRow(j);
@@ -219,54 +213,79 @@ public class PageViewServiceImpl implements PageViewService, ApplicationContextA
                 continue;
             }
             //第一行，拼接sql字段
-            Map<String, Object> values = new HashMap<>();
+            Map<String, Object> values = new HashMap<>(functionInfos.size());
             for (IFunctionInfo functionInfo : functionInfos) {
                 ImportInfo importInfo = (ImportInfo) functionInfo;
-                //需要判断是否有需要赋默认值的
-                if (importInfo.getCol().equals(-1)) {
+                String value = null;
+                //需要判断是否有需要赋默认值的,默认值优先
+                if (!SeageUtils.isEmpty(importInfo.getDefaultValue())) {
+                    //默认值
                     Class<? extends IDefaultValue> defClass = DefaultValueEnum.getDefClass(importInfo.getDefaultValue());
-                    IDefaultValue iDefaultValue = null;
-                    iDefaultValue = defClass.newInstance();
-                    String defaultValue = iDefaultValue.getDefaultValue("1", importInfo.getName(), importInfo.getDefaultValue());
-                    values.put(importInfo.getColumnName().toLowerCase(), defaultValue);
-                } else {
-                    //默认为Void，如果被改了，需要重新获取
-                    //字典表查询数据
-                    if (!importInfo.getOption().equals(Void.class)) {
-                        final OptionImpl bean = applicationContext.getBean(OptionImpl.class);
-                        String any = bean.getOptions()
-                                .stream()
-                                .filter(option -> option.getValue().equals(getCellValue(row.getCell(importInfo.getCol()))))
-                                .map(Option::getKey)
-                                .findAny()
-                                .orElseThrow(newViewException(420, "第" + (j + 1) + "行第" + (importInfo.getCol() + 1) + "列用户导入字段未找到对应值"));
-                        values.put(importInfo.getColumnName(), any);
-                    } else {
-                        //可以直接读取的
-                        values.put(importInfo.getColumnName().toLowerCase(), getCellValue(row.getCell(importInfo.getCol())));
-                    }
+                    IDefaultValue iDefaultValue = defClass.newInstance();
+                    value = iDefaultValue.getDefaultValue(sessionHandler.getUserName(), importInfo.getName(), importInfo.getDefaultValue());
+                } else if (!SeageUtils.isEmpty(importInfo.getOption())){
+                    //获取自定义的选项，一般是通过对应的value（Excel导入的值）获取对应的key(一般为数据库表主键，或者字典表的id值)
+                    Class<? extends IOption> iOptionClass = importInfo.getOption();
+                    IOption iOption = applicationContext.getBean(iOptionClass);
+                    value = iOption.getOptions(importInfo.getOptionParams())
+                            .stream()
+                            .filter(option -> Objects.equals(option.getValue(), getCellValue(row.getCell(importInfo.getCol()))))
+                            .map(Option::getKey)
+                            .findFirst()
+                            .orElseThrow(newViewException(420, "第" + (j + 1) + "行第" + (importInfo.getCol() + 1) + "列用户导入字段未找到对应值"));
+
+                }else {
+                    //可以直接读取的
+                    value = getCellValue(row.getCell(importInfo.getCol()));
                 }
-
-
+                if (value!=null){
+                    values.put(importInfo.getColumnName().toLowerCase(), value);
+                }
             }
             Object o = SeageJson.map2Object(values, pageViewClass);
+            //参数验证
             validateBean(j + 1, o);
+            //判重
+            distinct(pageViewInfo,values);
             columns.add(values);
         }
         pageViewMapper.importTable(columns, tableName);
     }
 
+    /**
+     * 模板下载
+     *
+     * @param viewName 视图名称
+     * @throws Exception
+     */
     @Override
-    public void excelFormWork(String filePaths, String excelName, HttpServletRequest req, HttpServletResponse resp) throws Exception {
-        if (SeageUtils.isEmpty(filePaths)) {
-            throw new FileDownLoadException("文件所在目录不能为空");
+    public ResponseEntity<AbstractResource> getTemplate(String viewName) throws Exception {
+        PageViewInfo pageViewInfo = PageViewContainer.getPageViewInfo(viewName);
+        String path = pageViewInfo.getExcelTemplatePath();
+        if (!SeageUtils.isEmpty(path)){
+            try {
+                InputStream stream = this.getClass().getResourceAsStream(path);
+                return Excel.export(stream);
+            } catch (NullPointerException e) {
+                throw new NoSuchTemplateException(path);
+            }
+        }else {
+            throw new NoSuchTemplateException(path);
         }
-        if (SeageUtils.isEmpty(excelName)) {
-            throw new FileDownLoadException("文件名称不能为空");
-        }
-        ExcelUtils excelUtils = new ExcelUtils();
-        excelUtils.downLoad(excelName, filePaths, req, resp);
     }
+
+
+//    @Override
+//    public void excelFormWork(String filePaths, String excelName, HttpServletRequest req, HttpServletResponse resp) throws Exception {
+//        if (SeageUtils.isEmpty(filePaths)) {
+//            throw new FileDownLoadException("文件所在目录不能为空");
+//        }
+//        if (SeageUtils.isEmpty(excelName)) {
+//            throw new FileDownLoadException("文件名称不能为空");
+//        }
+//        ExcelUtils excelUtils = new ExcelUtils();
+//        excelUtils.downLoad(excelName, filePaths, req, resp);
+//    }
 
     /**
      * excel表格导出
@@ -305,6 +324,39 @@ public class PageViewServiceImpl implements PageViewService, ApplicationContextA
         }
         ExcelUtils excelUtils = new ExcelUtils();
         excelUtils.makeExcelAndDownload(pageViewInfo.getViewName(), results, request, response);
+    }
+
+    /**
+     * 获取下拉选项
+     *
+     * @param viewName 视图名称
+     * @param params   请求参数
+     * @return
+     */
+    @Override
+    public List<Option> getOptions(String viewName, Map<String, Object> params) {
+        PageViewContainer pageViewContainer = PageViewContainer.getInstance();
+        PageViewInfo pageViewInfo = pageViewContainer.get(viewName);
+        List<IFunctionInfo> options = pageViewInfo.getThrow(FunctionType.OPTION);
+        List<Map<String, Object>> results = getList(viewName, params);
+        return results.stream().map(map->{
+            Option result = null;
+            for (IFunctionInfo option : options){
+                OptionInfo optionInfo = (OptionInfo) option;
+                Object o = map.get(optionInfo.getName());
+                if (!SeageUtils.isEmpty(o)){
+                    if (SeageUtils.isEmpty(result)){
+                        result = new Option();
+                    }
+                    if (Objects.equals(optionInfo.getOptionType(), OptionType.KEY)){
+                        result.setKey(o.toString());
+                    }else {
+                        result.setValue(o.toString());
+                    }
+                }
+            }
+           return result;
+        }).collect(Collectors.toList());
     }
 
 

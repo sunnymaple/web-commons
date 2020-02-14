@@ -32,4 +32,8 @@ public class DefaultViewName {
      * 系统日志
      */
     public static final String SYSTEM_LOG = "systemLog";
+    /**
+     * 字典表
+     */
+    public static final String DICTIONARY = "dictionary";
 }

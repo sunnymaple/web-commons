@@ -64,4 +64,11 @@ public @interface PageView {
      * @return
      */
     int row() default 1;
+
+    /**
+     * excel文件路径
+     * 相对路径
+     * @return
+     */
+    String excelTemplatePath() default "";
 }

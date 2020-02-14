@@ -65,6 +65,10 @@ public class PageViewInfo extends HashMap<FunctionType,List<IFunctionInfo>> {
      * excel从第几行开始读取(从 0 开始)
      */
     private Integer row;
+    /**
+     * excel模板文件路径
+     */
+    private String excelTemplatePath;
 
     /**
      * 判断是否开启自定义功能

@@ -17,8 +17,9 @@ public interface IResolver<A extends Annotation,R extends IFunctionInfo> {
      * 初始化方法
      * @param annotation 注解
      * @param field 字段
+     * @param viewName 当前的viewName
      */
-    void initialize(A annotation, Field field);
+    void initialize(A annotation, Field field,String viewName);
 
     /**
      * 解析

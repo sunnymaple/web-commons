@@ -19,6 +19,10 @@ public abstract class AbstractResolver<A extends Annotation,R extends IFunctionI
      * 属性字段
      */
     protected Field field;
+    /**
+     * 当前的viewName
+     */
+    protected String viewName;
 
     /**
      * 初始化方法
@@ -26,8 +30,9 @@ public abstract class AbstractResolver<A extends Annotation,R extends IFunctionI
      * @param annotation 注解
      */
     @Override
-    public void initialize(A annotation, Field field) {
+    public void initialize(A annotation, Field field,String viewName) {
         this.annotation = annotation;
         this.field = field;
+        this.viewName = viewName;
     }
 }

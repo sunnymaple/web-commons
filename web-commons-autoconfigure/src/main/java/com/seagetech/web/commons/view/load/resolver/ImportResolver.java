@@ -2,9 +2,16 @@ package com.seagetech.web.commons.view.load.resolver;
 
 import com.seagetech.common.util.SeageUtils;
 import com.seagetech.web.commons.bind.annotation.Import;
+import com.seagetech.web.commons.view.config.Config;
+import com.seagetech.web.commons.view.load.IOption;
 import com.seagetech.web.commons.view.load.ImportInfo;
+import com.seagetech.web.commons.view.load.exception.NotImplementsIOptionException;
+import com.seagetech.web.commons.view.load.exception.OptionParamFormatException;
+import org.springframework.context.ApplicationContext;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -22,8 +29,29 @@ public class ImportResolver extends AbstractResolver<Import, ImportInfo> {
                         SeageUtils.upperUnderScore(field.getName()) : annotation.columnName())
                 .setFieldType(annotation.fieldType())
                 .setName(SeageUtils.isEmpty(annotation.name()) ? field.getName() : annotation.name())
-                .setDefaultValue(annotation.defaultValue())
-                .setOption(annotation.option());
+                .setDefaultValue(annotation.defaultValue());
+        //选项
+        Class<?> option = annotation.option();
+        if (option != Void.class){
+            boolean assignableFrom = IOption.class.isAssignableFrom(option);
+            if (!assignableFrom){
+                throw new NotImplementsIOptionException(option);
+            }
+            importInfo.setOption((Class<? extends IOption>) option);
+            String[] optionParamsArray = annotation.optionParams();
+            Map<String,Object> params = new HashMap<>(SeageUtils.initialCapacity());
+            if (!SeageUtils.isEmpty(optionParamsArray)){
+               for (String optionParam : optionParamsArray){
+                   String[] optionParams = optionParam.split("=");
+                   if (optionParams.length!=2){
+                       throw new OptionParamFormatException(viewName,optionParam);
+                   }
+                   params.put(optionParams[0],optionParams[1]);
+               }
+            }
+            importInfo.setOptionParams(params);
+        }
+
         return Stream.of(importInfo).collect(Collectors.toList());
     }
 }

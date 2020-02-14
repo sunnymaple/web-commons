@@ -7,6 +7,7 @@ import com.seagetech.web.commons.bind.annotation.PageView;
 import com.seagetech.web.commons.bind.annotation.Resolver;
 import com.seagetech.web.commons.util.Utils;
 import com.seagetech.web.commons.view.exception.NotImplementsPageViewCustomException;
+import com.seagetech.web.commons.view.load.exception.PageViewException;
 import com.seagetech.web.commons.view.load.resolver.IResolver;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
@@ -121,7 +122,9 @@ public class PageViewLoadRegistrar implements ImportBeanDefinitionRegistrar {
                         .setTableId(pageView.tableId())
                         .setPageViewClass(beanClass)
                         .setViewPath(pageView.viewPath())
-                        .setRow(pageView.row());
+                        .setRow(pageView.row())
+                        .setExcelTemplatePath(pageView.excelTemplatePath());
+                pageViewContainer.put(pageView.value(),pageViewInfo);
                 //自定义
                 FunctionType[] functionTypes = pageView.enableCustomFunctions();
                 if (!SeageUtils.isEmpty(functionTypes)){
@@ -137,9 +140,8 @@ public class PageViewLoadRegistrar implements ImportBeanDefinitionRegistrar {
                 }
                 //加载功能
                 addInfo(beanClass,pageViewInfo);
-                pageViewContainer.put(pageView.value(),pageViewInfo);
             } catch (Exception e) {
-                throw new RuntimeException(e);
+                throw new PageViewException(e);
             }
         });
     }
@@ -168,7 +170,7 @@ public class PageViewLoadRegistrar implements ImportBeanDefinitionRegistrar {
                 Class<? extends IResolver> iResolver = resolver.resolverBy();
                 //初始化
                 IResolver resolverInstance = iResolver.newInstance();
-                resolverInstance.initialize(annotation,field);
+                resolverInstance.initialize(annotation,field,pageViewInfo.getViewName());
                 //解析
                 List<IFunctionInfo> iFunctionInfo = resolverInstance.resolver();
                 if (pageViewInfo.containsKey(functionType)){
