@@ -1,7 +1,6 @@
 package com.seagetech.web.commons.login;
 
 import com.seagetech.common.util.SeageUtils;
-import com.seagetech.web.commons.login.entity.DefaultLoginUser;
 import com.seagetech.web.commons.login.exception.LoginExceptionHandler;
 import com.seagetech.web.commons.login.exception.NotSupportLoginAuthPatternException;
 import com.seagetech.web.commons.login.session.DefaultSessionHandler;

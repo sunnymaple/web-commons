@@ -90,10 +90,20 @@ public class DefaultLoginController {
      * @param modelMap
      * @return
      */
-    @RequestMapping("/view")
+    @RequestMapping(value = "/view",produces = "text/html")
     public String login(ModelMap modelMap){
         modelMap.put("loginLogo", loginProperties.getLoginLogo());
         return loginProperties.getLoginPage();
+    }
+
+    /**
+     * 登录页接口
+     * @return
+     */
+    @RequestMapping(value = "/view",produces = "application/json")
+    @ResponseBody
+    public String login(){
+        throw new NotLoginException();
     }
 
     /**
@@ -103,6 +113,17 @@ public class DefaultLoginController {
     @ResponseBody
     public void notLogin(){
         throw new NotLoginException();
+    }
+
+    /**
+     * 登录页接口
+     * @param modelMap
+     * @return
+     */
+    @RequestMapping(value = "/notLogin",produces = "text/html")
+    public String notLogin(ModelMap modelMap){
+        modelMap.put("loginLogo", loginProperties.getLoginLogo());
+        return loginProperties.getLoginPage();
     }
 
     /**

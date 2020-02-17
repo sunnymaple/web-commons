@@ -41,7 +41,7 @@
 		<dependency>
 			<groupId>com.seagetech</groupId>
 			<artifactId>web-springboot-starter</artifactId>
-			<version>1.0.2</version>
+			<version>1.0.3</version>
 		</dependency>
 
 		<dependency>
