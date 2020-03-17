@@ -1,15 +1,11 @@
 package com.seagetech.web.commons.login;
 
 import com.seagetech.common.util.SeageUtils;
-import com.seagetech.web.commons.login.entity.DefaultLoginUser;
 import com.seagetech.web.commons.login.exception.LoginExceptionHandler;
 import com.seagetech.web.commons.login.exception.NotSupportLoginAuthPatternException;
 import com.seagetech.web.commons.login.session.DefaultSessionHandler;
 import com.seagetech.web.commons.login.session.ISessionHandler;
-import com.seagetech.web.commons.login.shiro.IPermission;
-import com.seagetech.web.commons.login.shiro.LoginAuthorizingRealm;
-import com.seagetech.web.commons.login.shiro.ShiroUtils;
-import com.seagetech.web.commons.login.shiro.UseUserNameLoginPermission;
+import com.seagetech.web.commons.login.shiro.*;
 import com.seagetech.web.commons.view.service.PageViewService;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
@@ -158,11 +154,14 @@ public class LoginAutoConfiguration implements ApplicationContextAware {
         shiroFilterFactoryBean.setLoginUrl(loginProperties.getLoginUrl());
         //5、没有权限跳转的页面
         shiroFilterFactoryBean.setUnauthorizedUrl("");
+//        LinkedHashMap<String, Filter> filtsMap = new LinkedHashMap<>();
+
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
         //6、自定义退出过滤器
         Map<String, Filter> filters = new HashMap<>(1);
         LogoutFilter logoutFilter = new LogoutFilter();
-        filters.put("logout",logoutFilter);
+        filters.put("logout",new LogoutFilter());
+        filters.put("authc",new WebFormAuthenticationFilter());
         //退出后跳转的页面
         logoutFilter.setRedirectUrl("/login/logout");
         shiroFilterFactoryBean.setFilters(filters);

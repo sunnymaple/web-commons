@@ -83,7 +83,7 @@ public class LoginProperties implements ApplicationContextAware {
      * 登录页接口
      * 默认是/login/notLogin
      */
-    private String loginUrl = "/login/view";
+    private String loginUrl = "/login/notLogin";
 
     /**
      * 登录页logo

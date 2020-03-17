@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.Objects;
 
@@ -38,6 +39,9 @@ public class DefaultLoginController {
 
     @Autowired
     private LoginProperties loginProperties;
+
+    @Autowired
+    private HttpServletRequest request;
 
     /**
      * 登录
@@ -90,7 +94,7 @@ public class DefaultLoginController {
      * @param modelMap
      * @return
      */
-    @RequestMapping("/view")
+    @RequestMapping(value = "/notLogin",produces = "text/html")
     public String login(ModelMap modelMap){
         modelMap.put("loginLogo", loginProperties.getLoginLogo());
         return loginProperties.getLoginPage();

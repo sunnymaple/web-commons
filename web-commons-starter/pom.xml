@@ -6,7 +6,7 @@
 
     <groupId>com.seagetech</groupId>
     <artifactId>web-commons-starter</artifactId>
-    <version>1.0.1-SNAPSHOT</version>
+    <version>1.0.2-SNAPSHOT</version>
 
     <distributionManagement>
         <repository>
@@ -25,7 +25,7 @@
         <dependency>
             <groupId>com.seagetech</groupId>
             <artifactId>web-commons-autoconfigure</artifactId>
-            <version>1.0.1-SNAPSHOT</version>
+            <version>1.0.2-SNAPSHOT</version>
         </dependency>
     </dependencies>
 
