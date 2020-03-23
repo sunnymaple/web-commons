@@ -19,6 +19,11 @@ public class WebFormAuthenticationFilter extends FormAuthenticationFilter {
     private static final Logger log = LoggerFactory.getLogger(WebFormAuthenticationFilter.class);
 
     @Override
+    protected void issueSuccessRedirect(ServletRequest request, ServletResponse response) throws Exception {
+        super.issueSuccessRedirect(request, response);
+    }
+
+    @Override
     protected boolean onAccessDenied(ServletRequest request, ServletResponse response) throws Exception {
         if (this.isLoginRequest(request, response)) {
             if (this.isLoginSubmission(request, response)) {
@@ -42,6 +47,7 @@ public class WebFormAuthenticationFilter extends FormAuthenticationFilter {
             log.info("请求路径：" + ((ShiroHttpServletRequest) request).getServletPath() + "被拦截");
             //原代码重定向
             this.saveRequestAndRedirectToLogin(request, response);
+//            this.issueSuccessRedirect();
             return false;
         }
     }

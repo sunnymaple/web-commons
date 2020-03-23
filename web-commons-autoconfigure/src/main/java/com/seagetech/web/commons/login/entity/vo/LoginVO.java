@@ -30,4 +30,8 @@ public class LoginVO {
      * 记住我
      */
     private Integer rememberMe;
+    /**
+     * 登录成功后的路径
+     */
+    private String loginSuccessPath;
 }

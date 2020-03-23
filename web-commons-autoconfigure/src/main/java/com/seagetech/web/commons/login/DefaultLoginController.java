@@ -6,6 +6,7 @@ import com.seagetech.web.commons.login.entity.vo.LoginVO;
 import com.seagetech.web.commons.login.exception.NotLoginException;
 import com.seagetech.web.commons.login.session.ISessionHandler;
 import com.seagetech.web.commons.login.shiro.ShiroUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.subject.Subject;
@@ -17,7 +18,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -82,7 +82,7 @@ public class DefaultLoginController {
             modelMap.put("message", HttpStatusTypeEnum.INTERNAL_SERVER_ERROR.getReasonPhrase());
             return loginProperties.getLoginPage();
         }
-        String successUrl = loginProperties.getSuccessUrl();
+        String successUrl = StringUtils.defaultIfBlank(loginVO.getLoginSuccessPath(),loginProperties.getSuccessUrl());
         if (!SeageUtils.isEmpty(successUrl)){
             return "redirect:" + successUrl;
         }
@@ -95,8 +95,9 @@ public class DefaultLoginController {
      * @return
      */
     @RequestMapping(value = "/notLogin",produces = "text/html")
-    public String login(ModelMap modelMap){
+    public String login(ModelMap modelMap,String url){
         modelMap.put("loginLogo", loginProperties.getLoginLogo());
+        modelMap.put("url",url);
         return loginProperties.getLoginPage();
     }
 
