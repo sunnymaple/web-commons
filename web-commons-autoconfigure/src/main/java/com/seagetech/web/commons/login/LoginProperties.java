@@ -4,8 +4,6 @@ import com.seagetech.web.commons.login.entity.DefaultLoginUser;
 import com.seagetech.web.commons.login.shiro.ShiroUtils;
 import lombok.Data;
 import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.BeanInitializationException;
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;

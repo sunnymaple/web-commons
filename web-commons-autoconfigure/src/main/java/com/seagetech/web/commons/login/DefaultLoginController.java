@@ -102,12 +102,33 @@ public class DefaultLoginController {
     }
 
     /**
+     * 登录页接口
+     * @return
+     */
+    @RequestMapping(value = "/view",produces = "application/json")
+    @ResponseBody
+    public String login(){
+        throw new NotLoginException();
+    }
+
+    /**
      * 未登录或者登录超时
      */
     @RequestMapping("/notLogin")
     @ResponseBody
     public void notLogin(){
         throw new NotLoginException();
+    }
+
+    /**
+     * 登录页接口
+     * @param modelMap
+     * @return
+     */
+    @RequestMapping(value = "/notLogin",produces = "text/html")
+    public String notLogin(ModelMap modelMap){
+        modelMap.put("loginLogo", loginProperties.getLoginLogo());
+        return loginProperties.getLoginPage();
     }
 
     /**
