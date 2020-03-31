@@ -87,6 +87,10 @@ public class LoginProperties implements ApplicationContextAware {
      * 登录页logo
      */
     private String loginLogo;
+    /**
+     * 退出登录访问地址
+     */
+    private String logoutPath;
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {

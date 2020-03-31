@@ -95,20 +95,11 @@ public class DefaultLoginController {
      * @return
      */
     @RequestMapping(value = "/notLogin",produces = "text/html")
-    public String login(ModelMap modelMap,String url){
-        modelMap.put("loginLogo", loginProperties.getLoginLogo());
-        modelMap.put("url",url);
-        return loginProperties.getLoginPage();
-    }
-
-    /**
-     * 登录页接口
-     * @return
-     */
-    @RequestMapping(value = "/view",produces = "application/json")
-    @ResponseBody
-    public String login(){
-        throw new NotLoginException();
+    public String login(ModelMap modelMap){
+        if (!SeageUtils.isEmpty(loginProperties.getLogoutPath())){
+            return "redirect:" + loginProperties.getLogoutPath();
+        }
+        return login(null,modelMap);
     }
 
     /**
@@ -122,14 +113,16 @@ public class DefaultLoginController {
 
     /**
      * 登录页接口
-     * @param modelMap
      * @return
      */
-    @RequestMapping(value = "/notLogin",produces = "text/html")
-    public String notLogin(ModelMap modelMap){
+    @RequestMapping(value = "/view",produces = "text/html")
+    public String login(String url,ModelMap modelMap){
+        modelMap.put("url",url);
         modelMap.put("loginLogo", loginProperties.getLoginLogo());
         return loginProperties.getLoginPage();
     }
+
+
 
     /**
      * 退出登录
@@ -147,6 +140,6 @@ public class DefaultLoginController {
      */
     @RequestMapping(value = "/logout",produces = "text/html")
     public String logoutHtml() {
-        return "redirect:/login/view";
+        return "redirect:" + (SeageUtils.isEmpty(loginProperties.getLogoutPath()) ? "/login/view" : loginProperties.getLogoutPath());
     }
 }

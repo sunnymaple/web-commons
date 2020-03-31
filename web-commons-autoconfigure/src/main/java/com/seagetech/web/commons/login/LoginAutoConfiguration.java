@@ -160,7 +160,7 @@ public class LoginAutoConfiguration implements ApplicationContextAware {
         //6、自定义退出过滤器
         Map<String, Filter> filters = new HashMap<>(1);
         LogoutFilter logoutFilter = new LogoutFilter();
-        filters.put("logout",new LogoutFilter());
+        filters.put("logout",logoutFilter);
         filters.put("authc",new WebFormAuthenticationFilter());
         //退出后跳转的页面
         logoutFilter.setRedirectUrl("/login/logout");

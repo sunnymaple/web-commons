@@ -109,5 +109,10 @@
       "name": "login.login-page",
       "type": "java.lang.String",
       "description": "登录页面"
+    },{
+      "sourceType": "com.seagetech.web.commons.login.LoginProperties",
+      "name": "login.logout-path",
+      "type": "java.lang.String",
+      "description": "退出后访问的路径，默认是登录接口"
     }]
 }
